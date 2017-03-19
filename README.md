@@ -1,4 +1,4 @@
-# BaBA
-Basic Bin Annotator
+# BCA
+Basic Contig Annotator
 
-Annotation of binned metagenome contig based on a simple LCA algorithm of N best blast hits against NCBI's nt database.
+Annotation metagenome contigs based on a simple LCA algorithm of N best blast hits against NCBI's nt database.
