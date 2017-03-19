@@ -31,12 +31,12 @@ def _main(args):
         if filename.endswith(".fa") or filename.endswith(".fas") or filename.endswith(".fasta"):
             contig_names = FileUtils.get_bin_contigs(os.path.join(args.bin_dir,filename))
             tt = TaxTree.TTree()
-            taxa = [y for x,y in c2t if x in contig_names]
-            print(taxa)
-            exit(0)
+            taxa = [c2t[x] for x in c2t if x in contig_names]
             for t in taxa:
                 tt.addT(tt.tree,t)
-            print(tt.lca(5))
+            cn = len(contig_names)
+            tn = len(taxa)
+            print("\Contig: %s\n# contigs: %d\n# contigs with taxonomy: %d\nNon-lazy taxanomy: %s\n" % (filename,cn,tn,tt.lca(tn)))
         
 
 

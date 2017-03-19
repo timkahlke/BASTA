@@ -32,9 +32,7 @@ def get_bin_contigs(cf):
     with open(cf,"r") as f:
         for line in f:
             if line.startswith(">"):
-                cn = line.replace(("\n",">"),"").split("\t")[0]
-                print(cn)
-                exit(0)
+                cn = (line.replace("\n","").replace(">","").split("\t"))[0]
                 c.append(cn)
     return c
 
