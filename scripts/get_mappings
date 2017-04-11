@@ -4,6 +4,7 @@ import sys
 import os
 import argparse
 import bsa
+import bsddb3
 import hashlib
 
 #######
@@ -37,117 +38,65 @@ import hashlib
 def main(args):
 
     if args.type == "all":
-        _all(args)
+        process_all(args)
     elif args.type == "prot":
-        _prot(args)
+        process_prot(args)
     elif args.type == "wgs":
-        _wgs(args)
+        process_wgs(args)
     elif args.type == "gss":
-        _gss(args)
+        process_gss(args)
     elif args.type == "est":
-        _est(args)
+        process_est(args)
     elif args.type == "pdb":
-        _pdb(args)
+        process_pdb(args)
     else:
-        _gb(args)
+        process_gb(args)
 
 
-def _all(args):
-    _prot(args)
-    _wgs(args)
-    _est(args)
-    _gss(args)
-    _gb(args)
-    _pdb(args)
+def process_all(args):
+    process_prot(args)
+    process_wgs(args)
+    process_est(args)
+    process_gss(args)
+    process_gb(args)
+    process_pdb(args)
 
 
 
 
-# Download protein database
-def _gss(args):
-    download(args.ncbi_ftp,"nucl_gss.accession2taxid.gz",args.output)
-    download(args.ncbi_ftp,"nucl_gss.accession2taxid.gz.md5",args.output)
-    
-    # Re-start download in cae MD5 sum not the same
-    while(_check("nucl_gss.accession2taxid.gz.md5",args.output)):
-        print("MD5 sum mismatch. Re-downloading file nucl_gss.accession2taxid.gz")
-        _gss(args)
-
-    # create berkeleydb acc2taxonid
+def process_gss(args):
+    if args.download:
+            down_and_check(args,"nucl_gss.accession2taxid.gz")
     bsa.create_db(os.path.join(root,"taxonomy"),"nucl_gss.accession2taxid.gz","gss_mapping.db",1,3)
 
 
-
-# Download protein database
-def _pdb(args):
-    download(args.ncbi_ftp,"pdb.accession2taxid.gz",args.output)
-    download(args.ncbi_ftp,"pdb.accession2taxid.gz.md5",args.output)
-    
-    # Re-start download in cae MD5 sum not the same
-    while(_check("pdb.accession2taxid.gz.md5",args.output)):
-        print("MD5 sum mismatch. Re-downloading file pdb.accession2taxid.gz.gz")
-        _pdb(args)
-
-    # create berkeleydb acc2taxonid
+def process_pdb(args):
+    if(args.download){
+        _downloadPDB(args)
     bsa.create_db(os.path.join(root,"taxonomy"),"pdb.accession2taxid.gz","pdb_mapping.db",1,3)
 
-    
 
-# Download protein database
-def _gb(args):
-    download(args.ncbi_ftp,"nucl_gb.accession2taxid.gz",args.output)
-    download(args.ncbi_ftp,"nucl_gb.accession2taxid.gz.md5",args.output)
-    
-    # Re-start download in cae MD5 sum not the same
-    while(_check("nucl_gb.accession2taxid.gz.md5",args.output)):
-        print("MD5 sum mismatch. Re-downloading file nucl_gb.accession2taxid.gz")
-        _gb(args)
-    
-    # create berkeleydb acc2taxonid
+def process_gb(args):
+    if args.download:
+        down_and_check(args,"nucl_gb.accession2taxid.gz")
     bsa.create_db(os.path.join(root,"taxonomy"),"nucl_gb.accession2taxid.gz","gb_mapping.db",1,3)
 
 
-# Download protein database
-def _est(args):
-    download(args.ncbi_ftp,"nucl_est.accession2taxid.gz",args.output)
-    download(args.ncbi_ftp,"nucl_est.accession2taxid.gz",args.output)
-    
-    # Re-start download in cae MD5 sum not the same
-    while(_check("nucl_est.accession2taxid.gz.md5",args.output)):
-        print("MD5 sum mismatch. Re-downloading file nucl_est.accession2taxid.gz")
-        _est(args)
-    
-    # create berkeleydb acc2taxonid
+def process_est(args):
+    if args.download:
+        down_and_check(args,"nucl_est.accession2taxid.gz")
     bsa.create_db(os.path.join(root,"taxonomy"),"nucl_est.accession2taxid.gz","est_mapping.db",1,3)
 
 
-
-# Download WGS database
-def _wgs(args):
-    download(args.ncbi_ftp,"nucl_wgs.accession2taxid.gz",args.output)
-    download(args.ncbi_ftp,"nucl_wgs.accession2taxid.gz",args.output)
-    
-    # Re-start download in cae MD5 sum not the same
-    while(_check("nucl_wgs.accession2taxid.gz.md5",args.output)):
-        print("MD5 sum mismatch. Re-downloading file nucl_wgs.accession2taxid.gz")
-        _wgs(args)
-    
-    # create berkeleydb acc2taxonid
+def process_wgs(args):
+    if args.download:
+        down_and_check(args,"nucl_wgs.accession2taxid.gz")
     bsa.create_db(os.path.join(root,"taxonomy"),"nucl_wgs.accession2taxid.gz","wgs_mapping.db",1,3)
 
 
-
-# Download protein database
-def _prot(args):
-    download(args.ncbi_ftp,"prot.accession2taxid.gz",args.output)
-    download(args.ncbi_ftp,"prot.accession2taxid.gz.md5",args.output)
-
-    # Re-start download in cae MD5 sum not the same
-    while(_check("prot.accession2taxid.gz.md5",args.output)):
-        print("MD5 sum mismatch. Re-downloading file prot.accession2taxid.gz")
-        _prot(args)
-
-    # create berkeleydb acc2taxonid
+def process_prot(args):
+    if args.download:
+        down_and_check(args,"prot.accession2taxid.gz")
     bsa.create_db(os.path.join(root,"taxonomy"),"prot.accession2taxid.gz","prot_mapping.db",1,3)
 
 
@@ -164,13 +113,20 @@ def _check(f,path):
         else:
             return 0
 
-    # create berkeleydb acc2taxonid
-    bsa.create_db(os.path.join(root,"taxonomy"),"nucl_gss.accession2taxid.gz","gss_mapping.db",1,3)
+
+# Start downloading and checking files
+def down_and_check(args,fn):
+    wget_file(args.ftp,fn,args.data_dir)
+    md5name = fn + ".md5"
+    wget_file(args.ftp,md5name,args.data_dir)
+
+    while(check_md5(md5name,args.data_dir):
+            print("MD5 sum mismatch. Re-downloading file %s" % fn)
+            down_and_check(args,fn)
 
 
-
-# Download database and md5 files
-def download(path,f,outdir):
+# Download files using wget
+def wget_file(path,f,outdir):
     print("Downloading database %s" % f)
     os.system("wget -O %s/%s %s/%s" % (outdir,f,path,f))
 
@@ -180,9 +136,10 @@ def download(path,f,outdir):
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="Script to download and process NCBI mappings of GenBank2Taxonid, Protein2TaxonID, EST2TaxonID, WGS2TaxonID and GSS2TaxonID.\nNOTE: Depending on your system and internet connection this can take up so several hours!")
     parser.add_argument("type", help="Type of mapping file to be downloaded (all, prot, est, wgs, gss or gb)", choices=['all','wgs','prot','est','gss','gb'])
-    parser.add_argument("output", help="Output directory (default: ../taxonomy)",default="../taxonomy")
+    parser.add_argument("data_dir", help="Directory of mapping files and databases (default: ../taxonomy)",default="../taxonomy")
     parser.add_argument("bsa_root", help="Path to BSA installation root (default: ..",default="..")
-    parser.add_argument("ncbi_ftp", help="URL to NCBI ftp for accession mapping (default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/)", default="ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/")
+    parser.add_argument("-f", "--ftp", help="URL to NCBI ftp for accession mapping (default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/)", default="ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/")
+    parser.add_argument("-d", "--download", help="If set to \"True\" mapping files will be downloaded, too", type=bool, default=False)
 
     args = parser.parse_args()
     main(args)
