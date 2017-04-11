@@ -6,6 +6,13 @@ As the name implies, BSA assigns taxonomies to sequences based on a basic Last C
 
 ## Requirements
 
+### Python packages
+
+BSA uses BerkeleyDB package '''bsddb''' as well as the '''gzip''' package. Both can be isntalled using pythons package manager '''pip'''
+
+### NCBI taxonomy files
+
+
 
 
 
