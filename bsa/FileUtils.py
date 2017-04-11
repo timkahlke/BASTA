@@ -61,6 +61,24 @@ def read_blast(bf,n,l,e):
     return (c2t,accs)
 
 
+
+def create_db(path,f,of,i1,i2):
+
+    ip = os.path.join(path,f)
+    op = os.path.join(path,of)
+
+    lookup =  bsddb.hashopen(op,"w")
+    
+    print("\n###Reading mapping file\nThis might take a while, please be patient ...\n\n\n")
+    
+    with gzip.open(ip,"r") as f:
+        for line in f:
+            ls = line.split()
+            lookup[ls[i1]]=ls[i2]
+        lookup.close()
+
+
+
 def get_bin_contigs(cf):
     """Read multi fasta contig file"""
     c = []
