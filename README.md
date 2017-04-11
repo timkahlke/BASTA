@@ -1,4 +1,11 @@
 # BCA
-Basic Contig Annotator
+Basic Sequence Annotator
 
-Annotation metagenome contigs based on a simple LCA algorithm of N best blast hits against NCBI's nt database.
+As the name implies, BSA assigns taxonomies to sequences based on a basic Last Common Ancestor (LCA) algorithm and best blast or diamond hits to a database of known sequences.
+
+
+## Requirements
+
+
+
+
