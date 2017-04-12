@@ -7,6 +7,7 @@ import bsa
 import bsddb3
 import hashlib
 
+
 #######
 #
 #  download_mappings.py - Download and process NCBI mapping to various database
@@ -71,7 +72,7 @@ def process_gss(args):
 
 
 def process_pdb(args):
-    if(args.download){
+    if args.download:
         _downloadPDB(args)
     bsa.create_db(os.path.join(root,"taxonomy"),"pdb.accession2taxid.gz","pdb_mapping.db",1,3)
 
@@ -120,7 +121,7 @@ def down_and_check(args,fn):
     md5name = fn + ".md5"
     wget_file(args.ftp,md5name,args.data_dir)
 
-    while(check_md5(md5name,args.data_dir):
+    while(check_md5(md5name,args.data_dir)):
             print("MD5 sum mismatch. Re-downloading file %s" % fn)
             down_and_check(args,fn)
 
