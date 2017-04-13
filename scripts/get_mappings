@@ -3,12 +3,14 @@
 import sys
 import os
 import argparse
-import bsa
 import bsddb3
 import hashlib
 
+# Quick'n'Dirty! Change!
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from bsa import FileUtils as fu
 
-#######
+############
 #
 #  download_mappings.py - Download and process NCBI mapping to various database
 #  accession numbers to ncbi taxonID
@@ -67,49 +69,49 @@ def process_all(args):
 
 def process_gss(args):
     if args.download:
-            down_and_check(args,"nucl_gss.accession2taxid.gz")
-    bsa.create_db(os.path.join(root,"taxonomy"),"nucl_gss.accession2taxid.gz","gss_mapping.db",1,3)
+        down_and_check(args,"nucl_gss.accession2taxid.gz")
+    fu.create_db(os.path.join(args.bsa_root,"taxonomy"),"nucl_gss.accession2taxid.gz","gss_mapping.db",1,3)
 
 
 def process_pdb(args):
     if args.download:
         _downloadPDB(args)
-    bsa.create_db(os.path.join(root,"taxonomy"),"pdb.accession2taxid.gz","pdb_mapping.db",1,3)
+    fu.create_db(os.path.join(args.bsa_root,"taxonomy"),"pdb.accession2taxid.gz","pdb_mapping.db",1,3)
 
 
 def process_gb(args):
     if args.download:
         down_and_check(args,"nucl_gb.accession2taxid.gz")
-    bsa.create_db(os.path.join(root,"taxonomy"),"nucl_gb.accession2taxid.gz","gb_mapping.db",1,3)
+    fu.create_db(os.path.join(args.bsa_root,"taxonomy"),"nucl_gb.accession2taxid.gz","gb_mapping.db",1,3)
 
 
 def process_est(args):
     if args.download:
         down_and_check(args,"nucl_est.accession2taxid.gz")
-    bsa.create_db(os.path.join(root,"taxonomy"),"nucl_est.accession2taxid.gz","est_mapping.db",1,3)
+    fu.create_db(os.path.join(args.bsa_root,"taxonomy"),"nucl_est.accession2taxid.gz","est_mapping.db",1,3)
 
 
 def process_wgs(args):
     if args.download:
         down_and_check(args,"nucl_wgs.accession2taxid.gz")
-    bsa.create_db(os.path.join(root,"taxonomy"),"nucl_wgs.accession2taxid.gz","wgs_mapping.db",1,3)
+    fu.create_db(os.path.join(args.bsa_root,"taxonomy"),"nucl_wgs.accession2taxid.gz","wgs_mapping.db",1,3)
 
 
 def process_prot(args):
     if args.download:
         down_and_check(args,"prot.accession2taxid.gz")
-    bsa.create_db(os.path.join(root,"taxonomy"),"prot.accession2taxid.gz","prot_mapping.db",1,3)
+    fu.create_db(os.path.join(args.bsa_root,"taxonomy"),"prot.accession2taxid.gz","prot_mapping.db",1,3)
 
 
 
 # Check MD5 sum of file
-def _check(f,path):
+def check_md5(f,path):
     with open(os.path.join(path,f)) as f:
         fl = f.readline()
         l = filter(None,fl.split())
         filehash = hashlib.md5()
         filehash.update(open(os.path.join(path,l[1])).read())
-        if str(filehash.hexdigest()) is not str(l[0]): 
+        if str(filehash.hexdigest()) != str(l[0]):
             return 1
         else:
             return 0
@@ -117,18 +119,21 @@ def _check(f,path):
 
 # Start downloading and checking files
 def down_and_check(args,fn):
-    wget_file(args.ftp,fn,args.data_dir)
-    md5name = fn + ".md5"
-    wget_file(args.ftp,md5name,args.data_dir)
 
-    while(check_md5(md5name,args.data_dir)):
-            print("MD5 sum mismatch. Re-downloading file %s" % fn)
-            down_and_check(args,fn)
+    print("\n########## [STATUS] ##########\nDownloading file %s\n##############################\n" % (fn))
+#    wget_file(args.ftp,fn,args.mapping_dir)
+    md5name = fn + ".md5"
+    print("########## [STATUS] ##########\nDownloading file %s\n##############################\n" % (md5name))
+#    wget_file(args.ftp,md5name,args.mapping_dir)
+
+    print("########## [STATUS] ##########\nChecking MD5 sum of file\n##############################\n")
+#    while(check_md5(md5name,args.mapping_dir)):
+#            print("\n############################## [ERROR] MD5 sum mismatch. Re-downloading files!!! ##############################\n")
+#            down_and_check(args,fn)
 
 
 # Download files using wget
 def wget_file(path,f,outdir):
-    print("Downloading database %s" % f)
     os.system("wget -O %s/%s %s/%s" % (outdir,f,path,f))
 
 
@@ -137,8 +142,8 @@ def wget_file(path,f,outdir):
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="Script to download and process NCBI mappings of GenBank2Taxonid, Protein2TaxonID, EST2TaxonID, WGS2TaxonID and GSS2TaxonID.\nNOTE: Depending on your system and internet connection this can take up so several hours!")
     parser.add_argument("type", help="Type of mapping file to be downloaded (all, prot, est, wgs, gss or gb)", choices=['all','wgs','prot','est','gss','gb'])
-    parser.add_argument("data_dir", help="Directory of mapping files and databases (default: ../taxonomy)",default="../taxonomy")
-    parser.add_argument("bsa_root", help="Path to BSA installation root (default: ..",default="..")
+    parser.add_argument("-b","--bsa_root", help="Path to BSA installation root (default: ..",default="..")
+    parser.add_argument("-m","--mapping_dir", help="Directory of mapping files and databases (default: ../taxonomy)",default="../taxonomy")
     parser.add_argument("-f", "--ftp", help="URL to NCBI ftp for accession mapping (default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/)", default="ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/")
     parser.add_argument("-d", "--download", help="If set to \"True\" mapping files will be downloaded, too", type=bool, default=False)
 

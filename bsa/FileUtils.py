@@ -1,6 +1,7 @@
+import os
 import gzip
 import bsddb
-
+import timeit
 
 #########
 #
@@ -67,15 +68,40 @@ def create_db(path,f,of,i1,i2):
     ip = os.path.join(path,f)
     op = os.path.join(path,of)
 
-    lookup =  bsddb.hashopen(op,"w")
-    
+  
+    db = bsddb.db
+    e = bsddb.db.DBEnv()
+    e.set_cachesize(0, 1024*1024*500)
+    e.set_lk_detect(db.DB_LOCK_DEFAULT)
+    e.set_flags(db.DB_TXN_WRITE_NOSYNC,1)
+    e.set_flags(db.DB_TXN_NOSYNC,1)
+    e.open('.', db.DB_PRIVATE | db.DB_CREATE | db.DB_THREAD | db.DB_INIT_LOCK | db.DB_INIT_MPOOL)
+    d = bsddb.db.DB(e)
+    d.open(op, db.DB_HASH, db.DB_CREATE | db.DB_THREAD, 0666)
+
+    lookup =  bsddb._DBWithCursor(d)
+#    bsddb.db.set_cachesize(0, 1024*1024*10)
+#    lookup = bsddb.hashopen(op)
+
     print("\n###Reading mapping file\nThis might take a while, please be patient ...\n\n\n")
-    
+   
+    timetotal = 0   
     with gzip.open(ip,"r") as f:
-        for line in f:
+        start_time = timeit.default_timer()
+        for count,line in enumerate(f):
+            if not count % 100000:
+                if not count:
+                    continue
+                elapsed = timeit.default_timer() - start_time
+                timetotal+=elapsed
+                print(elapsed)
+                num = count/100000
+                print("%d lines processed (avg time: %f)" % (count,timetotal/num))
+                start_time = timeit.default_timer()
             ls = line.split()
+#            db[ls[i1]]=ls[i2]
             lookup[ls[i1]]=ls[i2]
-        lookup.close()
+        db.close()
 
 
 
