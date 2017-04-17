@@ -56,17 +56,23 @@ In this case BASTA determines the LCA based on the LCA of the majority of given 
 # Set up and Usage
 
 ## Download and process NCBI taxonomy
-./bin/basta taxonomy
+BASTA is working on the NCBI taxonomy. To download and process the NCBI files use
+
+*./bin/basta taxonomy*
 
 This command will download the NCBI taxonomy dump, create a 7 level taxonomy file (complete_taxa.gz) and import it into a levelDB database (complete_taxa.db)
 
+
 ## Download and or create mapping database
-In case you are blasting against NT download and use the genbank mapping file
+Depending on the database you used to search your query sequences against BASTA will need mapping files to infer the correct taxonID for your hit sequences. To download and process mapping files use
 
-./bin/basta download gb
+*./bin/basta download MAPPING_FILE_TYPE*
 
+where MAPPING_FILE_TYPE can be gb (GenBank, RefSeq, NT ...), prot (Uniprot), pbd, wgs, est and gss.
 This will download the required mapping files and create a levelDB mapping database for further use
+
 **NOTE** The mapping files are several GB, i.e., download might take a while. Otherwise you can download the mapping files manually and use the *./bin/basta create_db* command to process them.
+
 
 ## BASTA Quick Intro
 A complete list of command and parameters can be listed using *./bin/basta -h* and *./bin/basta/ COMMAND -h*.
@@ -85,7 +91,7 @@ MAPPING_TYPE can be gb (NT,GenBank,RefSeq), prot (Uniprot), pdb, wgs, est and gs
 Final taxonomy will be written to STDOUT
 
 
-### One taxnon
+### One taxon for each blast/diamond file in a directory
 *./bin/basta multiple DIRECTORY_OF_BLAST_OUTPUT_FILES BASTA_OUTPUT_FILE MAPPING_TYPE*
 
 
