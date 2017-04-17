@@ -1,5 +1,5 @@
 # BASTA
-Basic Annotation of Sequence Taxonomy
+BAsic Sequence Taxonomy Annotation
 
 As the name implies, BASTA assigns taxonomies to sequences or groups of sequences based on the Last Common Ancestor (LCA) of best blast or diamond hits. Taxonomies are inferred from NCBI taxonomies.
 
