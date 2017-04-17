@@ -62,7 +62,7 @@ In this case BASTA determines the LCA based on the LCA of the majority of given 
 # Set up and Usage
 
 ## Download and process NCBI taxonomy
-BASTA is working on the NCBI taxonomy. To download and process the NCBI files use
+To download and process the required NCBI taxonomy files use
 
 ```
 ./bin/basta taxonomy
