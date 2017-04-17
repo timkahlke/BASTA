@@ -108,6 +108,8 @@ class Main():
 
 
     def _basta_download(self,args):
+        if not os.path.exists(args.mapping_dir):
+            os.makedirs(args.mapping_dir)
         self.logger.info("\n# 1. Download mapping file(s) from NCBI ###\n")
         (map_file, db_file) = self._get_db_name(args.type)
         if args.type == "prot":
@@ -136,12 +138,16 @@ class Main():
 
 
     def _basta_create_db(self,args):
+        if not os.path.exists(args.database_dir):
+            os.makedirs(args.database_dir)
         self.logger.info("\n#### Creating database\n")
         dbutils.create_db(args.database_dir,args.input,args.output,args.key,args.value)
         self.logger.info("\n#### Done. Processed file %s\n" % (args.input))
 
 
     def _basta_taxonomy(self,args):
+        if not os.path.exists(args.output):
+            os.makedirs(args.output)
         self.logger.info("\n#### Downloading and processing NCBI taxonomy files\n")
         self.logger.info("# 1. Download taxonomy files")
         dutils.down_and_check("ftp://ftp.ncbi.nih.gov/pub/taxonomy/","taxdump.tar.gz",args.output)

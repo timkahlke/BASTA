@@ -94,7 +94,7 @@ if __name__=="__main__":
     
     # create NCBI taxonomy
     taxonomy_parser = subparsers.add_parser('taxonomy', description='Download and create a complete NCBI taxonomy')
-    taxonomy_parser.add_argument("output", help="output directory (default: ../taxonomy", default=os.path.abspath("../taxonomy"))
+    taxonomy_parser.add_argument("-o", "--output", help="output directory (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
 
     args = parser.parse_args()
     main = bm.Main()
