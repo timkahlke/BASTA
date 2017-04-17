@@ -1,7 +1,7 @@
 # BASTA
 BAsic Sequence Taxonomy Annotation
 
-As the name implies, BASTA assigns taxonomies to sequences or groups of sequences based on the Last Common Ancestor (LCA) of best blast or diamond hits. Taxonomies are inferred from NCBI taxonomies.
+As the name implies, BASTA assigns taxonomies to sequences or groups of sequences based on the Last Common Ancestor (LCA) of best blast or diamond hits. Taxonomies are inferred from NCBI taxonomies based on a 7 level taxonomy. 
 
 
 # Requirements
@@ -10,27 +10,27 @@ As the name implies, BASTA assigns taxonomies to sequences or groups of sequence
 BASTA uses levelDB (https://github.com/google/leveldb) and the python wrapper Plyvel as a local database to hold NCBI mappings and taxonomies.
 
 ### LevelDB install Ubuntu
-
-*sudo apt-get update*
-
-*sudo apt-get install python-leveldb*
-
-*pip install Plyvel*
-
+```
+sudo apt-get update
+sudo apt-get install python-leveldb
+pip install Plyvel
+```
 
 
 
 ### LevelDB install MacOSX
 Easiest install is through homebrew (https://brew.sh/) and pip. 
-
+```
 brew install leveldb
 pip install Plyvel
+```
 
 #### Note
 Often MacOSX can't find the leveldb header files. If so try:
 
+```
 pip install --global-option=build_ext --global-option="-I/usr/local/include" --global-option="-L/usr/local/lib" Plyvel
-
+```
 
 ## Additional Python packages
 * gzip
@@ -53,6 +53,9 @@ BASTA supports two algorithms: all and majority
 ## All
 If this method is used BASTA reads a given number of best hits for each query sequence and returns the LCA of all sequences (unknown taxonomic levels in database hits are ignored).
 
+Additionally, if the *lazy* option is used, the user defined minimum number *n* of hits that is needed to estimate taxonomies will be discarded for sequences with a total hit number <n. Set values for e-value, identity, alignment length etc still apply.
+
+
 ## Majority
 In this case BASTA determines the LCA based on the LCA of the majority of given best hits. Example: if maximum best hit number is set to 5 and 3 best hits are Bacteria and 2 best hits are Archaea, BASTA returns Bacteria as LCA.
 
@@ -61,7 +64,9 @@ In this case BASTA determines the LCA based on the LCA of the majority of given 
 ## Download and process NCBI taxonomy
 BASTA is working on the NCBI taxonomy. To download and process the NCBI files use
 
-*./bin/basta taxonomy*
+```
+./bin/basta taxonomy
+```
 
 This command will download the NCBI taxonomy dump, create a 7 level taxonomy file (complete_taxa.gz) and import it into a levelDB database (complete_taxa.db)
 
@@ -69,7 +74,9 @@ This command will download the NCBI taxonomy dump, create a 7 level taxonomy fil
 ## Download and or create mapping database
 Depending on the database you used to search your query sequences against BASTA will need mapping files to infer the correct taxonID for your hit sequences. To download and process mapping files use
 
-*./bin/basta download MAPPING_FILE_TYPE*
+```
+./bin/basta download MAPPING_FILE_TYPE
+```
 
 where MAPPING_FILE_TYPE can be gb (GenBank, RefSeq, NT ...), prot (Uniprot), pbd, wgs, est and gss.
 This will download the required mapping files and create a levelDB mapping database for further use
@@ -78,25 +85,34 @@ This will download the required mapping files and create a levelDB mapping datab
 
 
 ## BASTA Quick Intro
-A complete list of command and parameters can be listed using *./bin/basta -h* and *./bin/basta/ COMMAND -h*.
+A complete list of command and parameters can be listed using `./bin/basta -h` and `./bin/basta/ COMMAND -h`.
 
 
 ### Get taxonomy for each sequence
 
-*./bin/basta sequence BLAST_OUTPUT_FILE BASTA_OUTPUT_FILE MAPPING_TYPE*
+```
+./bin/basta sequence BLAST_OUTPUT_FILE BASTA_OUTPUT_FILE MAPPING_TYPE
+```
 
 MAPPING_TYPE can be gb (NT,GenBank,RefSeq), prot (Uniprot), pdb, wgs, est and gss.
+Additional parameters: E-value, identity, minimum number of hits, maximum number of hits, lazy, estimation method
 
 
 ### One taxonomy for the whole file
-*./bin/basta single BLAST_OUTPUT_FILE MAPPING_TYPE*
+
+```
+./bin/basta single BLAST_OUTPUT_FILE MAPPING_TYPE
+```
 
 Final taxonomy will be written to STDOUT
-
+Additional parameters: E-value, identity, minimum number of hits, maximum number of hits, lazy, estimation method
 
 ### One taxon for each blast/diamond file in a directory
-*./bin/basta multiple DIRECTORY_OF_BLAST_OUTPUT_FILES BASTA_OUTPUT_FILE MAPPING_TYPE*
 
+```
+./bin/basta multiple DIRECTORY_OF_BLAST_OUTPUT_FILES BASTA_OUTPUT_FILE MAPPING_TYPE
+```
+Additional parameters: E-value, identity, minimum number of hits, maximum number of hits, lazy, estimation method
 
 
 
