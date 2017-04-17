@@ -1,0 +1,103 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+
+# Quick'n'Dirty! Change!
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from basta import BastaMain as bm
+
+#   COPYRIGHT DISCALIMER:
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#
+#
+#   Author: Tim Kahlke, tim.kahlke@audiotax.is
+#   Date:   April 2017
+#
+
+
+
+if __name__=="__main__":
+    parser = argparse.ArgumentParser(description="Basic sequence taxonomy assignment")
+    subparsers = parser.add_subparsers(help='sub-command help', dest="subparser_name")
+
+    # annotate all sequences in blast file
+    an_seq_parser = subparsers.add_parser('sequence', description='Estimate a taxonomy for each query sequence')    
+    an_seq_parser.add_argument("blast", help="blast/diamond result file (tabular format")
+    an_seq_parser.add_argument("output", help="output file name")
+    an_seq_parser.add_argument("type", help="Type of mapping file",choices=['wgs','prot','est','gss','gb','pdb'])
+    an_seq_parser.add_argument("-t","--tax_method", help="Method for taxon estimation (default: all)", choices=['all','majority'],default="all")
+    an_seq_parser.add_argument("-e", "--evalue", help="maximum evalue of good hit (default=0.00001)",type=float, default=0.00001)
+    an_seq_parser.add_argument("-l", "--alen", help="minimum length for good blast alignment", type=int, default=1)
+    an_seq_parser.add_argument("-n", "--number", help="maximum number of hits to use for classification (default=4)", type=int, default=4)
+    an_seq_parser.add_argument("-m", "--minimum", help="number of hits to consider of maximum hits (majority rule: default=3)", type=int, default=3)
+    an_seq_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
+    an_seq_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
+    an_seq_parser.add_argument("-d", "--directory", help="directory of database files (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
+
+
+    # annotate all sequences in fasta file
+    an_single_parser = subparsers.add_parser('single', description='Estimate one single taxonomy based on all query sequences')
+    an_single_parser.add_argument("blast", help="blast/diamond result file (tabular format")
+    an_single_parser.add_argument("type", help="Type of mapping file",choices=['wgs','prot','est','gss','gb','pdb'])
+    an_single_parser.add_argument("-t","--tax_method", help="Method for taxon estimation (default: all)", choices=['all','majority'],default="all")
+    an_single_parser.add_argument("-e", "--evalue", help="maximum evalue of good hit (default=0.00001)",type=float, default=0.00001)
+    an_single_parser.add_argument("-l", "--alen", help="minimum length for good blast alignment", type=int, default=1)
+    an_single_parser.add_argument("-n", "--number", help="maximum number of hits to use for classification (default=4)", type=int, default=4)
+    an_single_parser.add_argument("-m", "--minimum", help="number of hits to consider of maximum hits (majority rule: default=3)", type=int, default=3)
+    an_single_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
+    an_single_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
+    an_single_parser.add_argument("-d", "--directory", help="directory of database files (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
+
+    # batch sequence annotation
+    an_dir_parser = subparsers.add_parser('multiple', description='Estimate one taxonomy for each file in given directory')
+    an_dir_parser.add_argument("blast", help="directory blast/diamond result file (tabular format")
+    an_dir_parser.add_argument("output", help="output file name")
+    an_dir_parser.add_argument("type", help="Type of mapping file",choices=['wgs','prot','est','gss','gb','pdb'])
+    an_dir_parser.add_argument("-t","--tax_method", help="Method for taxon estimation (default: all)", choices=['all','majority'],default="all")
+    an_dir_parser.add_argument("-e", "--evalue", help="maximum evalue of good hit (default=0.00001)",type=float, default=0.00001)
+    an_dir_parser.add_argument("-l", "--alen", help="minimum length for good blast alignment", type=int, default=1)
+    an_dir_parser.add_argument("-n", "--number", help="maximum number of hits to use for classification (default=4)", type=int, default=4)
+    an_dir_parser.add_argument("-m", "--minimum", help="number of hits to consider of maximum hits (majority rule: default=3)", type=int, default=3)
+    an_dir_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
+    an_dir_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
+    an_dir_parser.add_argument("-d", "--directory", help="directory of database files (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
+
+    # download NCBI mappings
+    download_parser = subparsers.add_parser('download', description='Download NCBI taxonomy file(s)')
+    download_parser.add_argument("type", help="Type of mapping file to be downloaded (prot, est, wgs, gss or gb)", choices=['wgs','prot','est','gss','gb','pdb'])
+    download_parser.add_argument("-m","--mapping_dir", help="Directory of mapping files (default: ../taxonomy)",default=os.path.abspath("../taxonomy"))
+    download_parser.add_argument("-f", "--ftp", help="URL to NCBI ftp for accession mapping (default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/)", default="ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/")
+
+
+    # create mapping database
+    create_db_parser = subparsers.add_parser('create_db', description='Create a mapping database')
+    create_db_parser.add_argument("input", help="Input tab-separated file")
+    create_db_parser.add_argument("output", help="name of the output database file")
+    create_db_parser.add_argument("key", help="index of column that should be used as key", type=int)
+    create_db_parser.add_argument("value", help="index of column that should be used as value", type=int)
+    create_db_parser.add_argument("-d","--database_dir", help="Directory of database files (default: ../taxonomy)",default=os.path.abspath("../taxonomy"))
+    create_db_parser.add_argument("-r","--remove", help="if true original input file will be removed", type=bool, default=False)
+    
+    # create NCBI taxonomy
+    taxonomy_parser = subparsers.add_parser('taxonomy', description='Download and create a complete NCBI taxonomy')
+    taxonomy_parser.add_argument("output", help="output directory (default: ../taxonomy", default=os.path.abspath("../taxonomy"))
+
+    args = parser.parse_args()
+    main = bm.Main()
+    main.run_basta(args) 
+
+
