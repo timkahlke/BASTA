@@ -11,9 +11,11 @@ BASTA uses levelDB (https://github.com/google/leveldb) and the python wrapper Pl
 
 ### LevelDB install Ubuntu
 
-'''sudo apt-get update
+'''bash
+sudo apt-get update
 sudo apt-get install python-leveldb
-pip install Plyvel'''
+pip install Plyvel
+'''
 
 
 
