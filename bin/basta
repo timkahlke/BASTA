@@ -8,6 +8,11 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from basta import BastaMain as bm
 
+
+###
+#   Main script to start BASTA
+###
+#
 #   COPYRIGHT DISCALIMER:
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
