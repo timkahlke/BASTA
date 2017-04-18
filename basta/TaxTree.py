@@ -1,8 +1,7 @@
 #########
 #
-#   TaxTree.py - represents a traa of given taxon names and
-#   provides helper functions for it
-#   and corresponding class functions
+#   TaxTree.py - tree structure of given taxon names plus
+#   class functions 
 #
 ####
 #
@@ -31,12 +30,12 @@ class TTree(object):
         self.tree = {}
         self.taxon=""
 
-
+    # Add new taxon to the tree
     def add_taxon(self,tree,string):
         ts = self._get_known_strings(string)
         self._add(tree,ts)
 
-
+    # Walk through tree and add each level of new taxon
     def _add(self,tree,taxon):
         i = taxon.pop(0) if taxon else 0
         if i:
