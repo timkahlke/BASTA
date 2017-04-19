@@ -3,11 +3,12 @@
 import os
 import sys
 import argparse
-
+import subprocess
+import tempfile
 
 ############
 #
-#   Class for classification
+#  Create Krona plot from BASTA classification 
 #
 ####
 #   COPYRIGHT DISCALIMER:
@@ -34,15 +35,18 @@ import argparse
 
 def main(args):
     counts = _parseBASTA(args.input)
-
+    _writeKrona(counts,args.output)
 
 def _writeKrona(counts,of):
 
-    (fd,path) = tempfile.mkstemps('','KronaTemp')
-    with fdopen(fd,"w") as f:
-        for count,tax in counts:
+    _,path = tempfile.mkstemp('','KronaTemp')
+    with open(path,"w") as tf:
+        for tax in counts:
             ts = "\t".join(tax.split(";"))
-            tf.write("%s\t%s" % (count,ts))
+            tf.write("%s\t%s" % (counts[tax],ts))
+    
+    subprocess.check_call(["ktImportText","-o",of,path])
+    os.remove(path) 
 
 
 
@@ -54,7 +58,10 @@ def _parseBASTA(bf):
             ls = filter(None,line.split("\t"))
             if len(ls) != 2:
                 print("[Error] Wrong format of line %s" % (line))
-            count[ls[]] = count[ls[1]] + 1 if count[ls[1]] else 1
+            try:
+                counts[ls[1]] += 1 
+            except KeyError:
+                counts[ls[1]] = 1
     return counts
 
 
