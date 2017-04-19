@@ -117,7 +117,15 @@ Additional parameters: E-value, identity, minimum number of hits, maximum number
 
 
 
+# Additional scripts
 
+## basta2krona
+
+This creates a crona plot (html file) that can be opened in your browser from a basta annotation output file.
+
+```
+./scripts/basta2krona BASTA_OUTPUT_FILE KRONA_HTML_FILE
+```
 
 
 
