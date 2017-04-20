@@ -38,6 +38,10 @@ pip install --global-option=build_ext --global-option="-I/usr/local/include" --g
 * argparse
 
 
+## KronaTools
+For summary plots kronatools are required (https://github.com/marbl/Krona/wiki/KronaTools)
+
+
 # Introduction
 
 Given a blast or diamond output file (tabular output) BASTA tries to infer taxonomies  
