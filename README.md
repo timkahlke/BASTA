@@ -39,7 +39,7 @@ pip install --global-option=build_ext --global-option="-I/usr/local/include" --g
 
 
 ## KronaTools
-For summary plots kronatools are required (https://github.com/marbl/Krona/wiki/KronaTools)
+For summary plots kronatools is required (https://github.com/marbl/Krona/wiki/KronaTools)
 
 
 # Introduction
