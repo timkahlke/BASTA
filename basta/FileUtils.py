@@ -86,10 +86,16 @@ def _get_hit_name(hs):
     # >bla|accession.version|additional-string
     # or
     # >accession.version optional-additional-info
+    # or
+    # >gi|gi_number|ref|accession
 
-    ps=hs.split("\|")
+    # DIRTY! Create a better name guessing!!!!
+    ps=hs.split("|")
     if len(ps)>=3:
-        return  [x for x in ps[1].split(".") if x][0]
+        if ps[0] == 'gi':
+            return  [x for x in ps[3].split(".") if x][0]
+        else:
+            return  [x for x in ps[1].split(".") if x][0]
     else:
         return  [x for x in hs.replace(">","").split(".") if x][0]
 

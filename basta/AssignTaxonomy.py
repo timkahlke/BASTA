@@ -159,12 +159,13 @@ class Assigner():
         config = {}
         with open(cp,"r") as f:
             for line in f:
-                ls = line.split("\t")
-                config[ls[0]] = ls[1]
+                ls = line.strip().split("\t")
+                config[ls[0]] = int(ls[1])
 
         for m in mandatory:
             if m not in config:
                 self.logger.error("# [BASTA ERROR] No index field defined for %s in %s!" % (b,cp))
+        return config
         
     def _init_default_config(self):
         return {'query_id':0,'subject_id':1,'evalue':10,'align_length':3,'pident':2}
