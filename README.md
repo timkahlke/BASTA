@@ -123,14 +123,19 @@ Additional parameters: E-value, identity, minimum number of hits, maximum number
 
 # Additional scripts
 
-## basta2krona
+## basta2krona.py
 
-This creates a crona plot (html file) that can be opened in your browser from a basta annotation output file.
+This creates a krona plot (html file) that can be opened in your browser from a basta annotation output file.
 
 ```
 ./scripts/basta2krona BASTA_OUTPUT_FILE KRONA_HTML_FILE
 ```
 
 
+## filter_fasta.py
 
+This script can be used to filter a given fasta file based on BASTA annotations.
 
+```
+./scripts/filter_fasta.py [options] FASTA_FILE FILTERED_OUTPUT_FILE NAME_OF_TAXON BASTA_FILE
+```
