@@ -55,23 +55,23 @@ class Assigner():
 
 
     def _assign_sequence(self,blast,output,db_file):
-        self.logger.info("Initializing taxonomy database")
-        tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa"))
-        self.logger.info("Initializing mapping database")
+        self.logger.info("\n# [BASTA STATUS] Initializing taxonomy database")
+        tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
+        self.logger.info("\n# [BASTA STATUS] Initializing mapping database")
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         out_fh = open(output,"w")
-        self.logger.info("Assigning taxonomies ...")
+        self.logger.info("\n# [BASTA STATUS] Assigning taxonomies ...")
         for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity):
             taxa = []
             for seq in seq_hits:
                 for hit in seq_hits[seq]:
                     taxon_id = map_lookup.get(hit['id'])
                     if not taxon_id:
-                        self.logger.warning("[WARNING] No mapping found for %s in %s" % (hit['id'],db_file))
+                        self.logger.warning("\n# [BASTA WARNING] No mapping found for %s in %s" % (hit['id'],db_file))
                         continue
                     tax_string = tax_lookup.get(taxon_id)
                     if not tax_string:
-                        self.logger.warning("[WARNING] No taxon found for %d in %s" % (int(taxon_id),os.path.join(self.directory,"complete_taxa")))
+                        self.logger.warning("\n# [BASTA WARNING] No taxon found for %d in %s" % (int(taxon_id),os.path.join(self.directory,"complete_taxa.db")))
                         continue
 
                     taxa.append(tax_string)
@@ -82,7 +82,7 @@ class Assigner():
 
 
     def _assign_single(self,blast,db_file):
-        tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa"))
+        tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         taxa = []
         for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity):
@@ -90,11 +90,11 @@ class Assigner():
                 for hit in seq_hits[seq]:
                     taxon_id = map_lookup.get(hit['id'])
                     if not taxon_id:
-                        self.logger.warning("[WARNING] No mapping found for %s in %s" % (hit['id'],db_file))
+                        self.logger.warning("\n# [BASTA WARNING] No mapping found for %s in %s" % (hit['id'],db_file))
                         continue
                     tax_string = tax_lookup.get(taxon_id)
                     if not tax_string:
-                        self.logger.warning("[WARNING] No taxon found for %d in %s" % (int(taxon_id),os.path.join(self.directory,"complete_taxa")))
+                        self.logger.warning("\n# [BASTA WARNING] No taxon found for %d in %s" % (int(taxon_id),os.path.join(self.directory,"complete_taxa.db")))
                         continue
 
                 taxa.append(tax_string)
@@ -107,7 +107,7 @@ class Assigner():
         out_fh = open(output,"w")
         out_fh.write("#File\tLCA\n")
         for bf in os.listdir(blast_dir):
-            self.logger.info("- Estimating Last Common Ancestor for file  %s" % (str(bf)))
+            self.logger.info("\n# [BASTA STATUS] - Estimating Last Common Ancestor for file  %s" % (str(bf)))
             lca = _assign_single(os.path.join(blast_dir,bf),db_file)
             out_fh.write("%s\t%s\n" %(bf,lca))
         out_fh.close() 

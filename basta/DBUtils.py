@@ -42,7 +42,7 @@ def create_db(path,f,of,i1,i2):
 
     lookup = plyvel.DB(op, create_if_missing=True)
     wb = lookup.write_batch()
-    logger.info("#Reading mapping file\nThis might take a while, please be patient ...\n")
+    logger.info("\n# [BASTA STATUS] Reading mapping file\nThis might take a while, please be patient ...\n")
 
     timetotal = 0
     try:
@@ -55,13 +55,13 @@ def create_db(path,f,of,i1,i2):
                     elapsed = timeit.default_timer() - start_time
                     timetotal+=elapsed
                     num = count/1000000
-                    logger.info("%d lines processed (avg time: %fsec)" % (count,timetotal/num))
+                    logger.info("\n# [BASTA STATUS] %d lines processed (avg time: %fsec)" % (count,timetotal/num))
                     start_time = timeit.default_timer()
                 ls = line.split()
                 lookup.put(ls[i1],ls[i2])
             lookup.close()
     except IOError:
-        logger.error("No file %s: did you forget to download mapping file (parameter -d True)?" % (ip))
+        logger.error("\n# [BASTA ERROR] No file %s: did you forget to download mapping file (parameter -d True)?" % (ip))
 
 
 def _init_db(db):

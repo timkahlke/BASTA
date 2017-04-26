@@ -51,7 +51,7 @@ if __name__=="__main__":
     an_seq_parser.add_argument("-m", "--minimum", help="number of hits to consider of maximum hits (majority rule: default=3)", type=int, default=3)
     an_seq_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
     an_seq_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
-    an_seq_parser.add_argument("-d", "--directory", help="directory of database files (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
+    an_seq_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
 
 
     # annotate all sequences in fasta file
@@ -65,7 +65,7 @@ if __name__=="__main__":
     an_single_parser.add_argument("-m", "--minimum", help="number of hits to consider of maximum hits (majority rule: default=3)", type=int, default=3)
     an_single_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
     an_single_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
-    an_single_parser.add_argument("-d", "--directory", help="directory of database files (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
+    an_single_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
 
     # batch sequence annotation
     an_dir_parser = subparsers.add_parser('multiple', description='Estimate one taxonomy for each file in given directory')
@@ -79,12 +79,12 @@ if __name__=="__main__":
     an_dir_parser.add_argument("-m", "--minimum", help="number of hits to consider of maximum hits (majority rule: default=3)", type=int, default=3)
     an_dir_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
     an_dir_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
-    an_dir_parser.add_argument("-d", "--directory", help="directory of database files (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
+    an_dir_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
 
     # download NCBI mappings
     download_parser = subparsers.add_parser('download', description='Download NCBI taxonomy file(s)')
     download_parser.add_argument("type", help="Type of mapping file to be downloaded (prot, est, wgs, gss or gb)", choices=['wgs','prot','est','gss','gb','pdb'])
-    download_parser.add_argument("-m","--mapping_dir", help="Directory of mapping files (default: ../taxonomy)",default=os.path.abspath("../taxonomy"))
+    download_parser.add_argument("-m","--mapping_dir", help="Directory of mapping files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
     download_parser.add_argument("-f", "--ftp", help="URL to NCBI ftp for accession mapping (default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/)", default="ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/")
 
 
@@ -94,12 +94,12 @@ if __name__=="__main__":
     create_db_parser.add_argument("output", help="name of the output database file")
     create_db_parser.add_argument("key", help="index of column that should be used as key", type=int)
     create_db_parser.add_argument("value", help="index of column that should be used as value", type=int)
-    create_db_parser.add_argument("-d","--database_dir", help="Directory of database files (default: ../taxonomy)",default=os.path.abspath("../taxonomy"))
+    create_db_parser.add_argument("-d","--database_dir", help="Directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
     create_db_parser.add_argument("-r","--remove", help="if true original input file will be removed", type=bool, default=False)
     
     # create NCBI taxonomy
     taxonomy_parser = subparsers.add_parser('taxonomy', description='Download and create a complete NCBI taxonomy')
-    taxonomy_parser.add_argument("-o", "--output", help="output directory (default: ../taxonomy)", default=os.path.abspath("../taxonomy"))
+    taxonomy_parser.add_argument("-o", "--output", help="output directory (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
 
     args = parser.parse_args()
     main = bm.Main()

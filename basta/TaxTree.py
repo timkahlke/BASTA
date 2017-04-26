@@ -52,7 +52,7 @@ class TTree(object):
         elif method == 'majority':
             self.taxon = self.create_majority_lca(self.tree,self.taxon,min_count,total)
         else:
-            self.logger.error("Unknown method")
+            self.logger.error("\n# [ERROR] Unknown method")
         if not self.taxon:
             self.taxon = "Unknown"
         return self.taxon

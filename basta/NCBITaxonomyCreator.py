@@ -76,7 +76,7 @@ class Creator():
             current+=tree['name'] + ";"
             current = self._fill_taxon_post_rank(tree['rank'],current)
             if len(current.split(";"))-1 != len(self.ranks):
-                self.logger.error("Wrong number of taxa in string %s" % (current))
+                self.logger.error("\n# [BASTA ERROR] Wrong number of taxa in string %s" % (current))
         else:
             current = taxon_string
             if len(taxon_string.split(";")) < len(self.ranks):
@@ -85,7 +85,7 @@ class Creator():
             # If no (known) rank assign last known rank to taxon
             current = self._fill_taxon_post_rank(self.ranks[len(current.split(";"))-2],current)
             if len(current.split(";"))-1 != len(self.ranks):
-                self.logger.error("Wrong number of taxa in string %s" % (current))
+                self.logger.error("\n# [BASTA ERROR] Wrong number of taxa in string %s" % (current))
 
         oh.write("%s\t%s\n" % (taxon_id,current))
 
@@ -128,10 +128,13 @@ class Creator():
     # they can be corrected here
     def _read_corrections(self):
         corrections = {}
-        with open(os.path.abspath("../taxonomy/ncbi_taxonomy.correction"),"r") as f:
-            for line in f:
-                ls = line.replace("\n","").split()
-                corrections[ls[0]] = ls[1]
+        try:
+            with open(os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy/ncbi_taxonomy.correction")),"r") as f:
+                for line in f:
+                    ls = line.replace("\n","").split()
+                    corrections[ls[0]] = ls[1]
+        except IOError:
+            pass
         return corrections
 
 
@@ -145,7 +148,7 @@ class Creator():
 
                 if ls[0] in corrections:
                     if ls[2] != corrections[ls[0]]:
-                        print("\n[WARNING] Correcting NCBI taxonomic rank for %s:\nRank found in nodes.dmp: %s\nRank in correction file: %s\n" % (ls[0],ls[2],corrections[ls[0]]))
+                        print("\n[BASTA WARNING] Correcting NCBI taxonomic rank for %s:\nRank found in nodes.dmp: %s\nRank in correction file: %s\n" % (ls[0],ls[2],corrections[ls[0]]))
                         ls[2] = corrections[ls[0]]
     
                 # only root has same parent and child

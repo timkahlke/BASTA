@@ -110,7 +110,7 @@ class Main():
     def _basta_download(self,args):
         if not os.path.exists(args.mapping_dir):
             os.makedirs(args.mapping_dir)
-        self.logger.info("\n# 1. Download mapping file(s) from NCBI ###\n")
+        self.logger.info("\n##### Downloading and processing mapping file(s) from NCBI ###\n")
         (map_file, db_file) = self._get_db_name(args.type)
         if args.type == "prot":
             map_file = "prot.accession2taxid.gz"
@@ -131,10 +131,11 @@ class Main():
             map_file = "nucl_gb.accession2taxid.gz"
             db_file = "gb_mapping.db"
 
+        self.logger.info("\n# [BASTA STATUS] Downloading mapping files\n")
         dutils.down_and_check(args.ftp,map_file,args.mapping_dir)
-        self.logger.info("\n# 2. Creating mapping database\n")
+        self.logger.info("\n# [BASTA STATUS] Creating mapping database\n")
         dbutils.create_db(args.mapping_dir,map_file,db_file,0,2)
-        self.logger.info("\n# Done. Downloaded and processed file %s\n" % (map_file))
+        self.logger.info("\n##### Done. Downloaded and processed file %s\n" % (map_file))
 
 
     def _basta_create_db(self,args):
@@ -149,14 +150,16 @@ class Main():
         if not os.path.exists(args.output):
             os.makedirs(args.output)
         self.logger.info("\n#### Downloading and processing NCBI taxonomy files\n")
-        self.logger.info("# 1. Download taxonomy files")
+        self.logger.info("\n# [BASTA STATUS] Download taxonomy files")
         dutils.down_and_check("ftp://ftp.ncbi.nih.gov/pub/taxonomy/","taxdump.tar.gz",args.output)
         call(["tar", "-xzvf", os.path.join(args.output,"taxdump.tar.gz"), "-C", args.output])
 
-        self.logger.info("\n# 2. Creating complete taxonomy file\n")
+        self.logger.info("\n# [BASTA STATUS] Creating complete taxonomy file\n")
         tax_creator = ntc.Creator(os.path.join(args.output,"names.dmp"),os.path.join(args.output,"nodes.dmp"))
         tax_creator._write(os.path.join(args.output,"complete_taxa"))
 
-        self.logger.info("# 3. Creating taxonomy database")
+        self.logger.info("\n# [BASTA STATUS] Creating taxonomy database")
         dbutils.create_db(args.output,"complete_taxa.gz","complete_taxa.db",0,1)
+
+        self.logger.info("\n### Done! NCBI taxonomy database created in %s ####" % (args.output))
 
