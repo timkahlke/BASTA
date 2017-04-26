@@ -69,7 +69,7 @@ class Main():
     def _basta_sequence(self,args):
         self.logger.info("\n#### Assigning taxonomy to each sequence ###\n")
         (map_file, db_file) = self._get_db_name(args.type)
-        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory)
+        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path)
         assigner._assign_sequence(args.blast,args.output,db_file)
         self.logger.info("\n#### Done. Output written to %s" % (args.output))
 
@@ -77,7 +77,7 @@ class Main():
     def _basta_single(self,args):
         self.logger.info("\n#### Assigning one taxonomy based on all sequences ###\n")
         (map_file, db_file) = self._get_db_name(args.type)
-        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory) 
+        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path) 
         lca = assigner._assign_single(args.blast,db_file)
         self.logger.info("\n##### Results ("+ args.tax_method +")#####\n")
         self.logger.info("Last Common Ancestor: %s\n" % (lca))
@@ -87,7 +87,7 @@ class Main():
     def _basta_multiple(self,args):
         self.logger.info("\n####  Assigning one taxonomy for each file ###\n")
         (map_file, db_file) = self._get_db_name(args.type)
-        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory)
+        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path)
         assigner._assign_multiple(args.blast,args.output,db_file)
         self.logger.info("\n###### Done. Output written to %s" % (args.output))
 
