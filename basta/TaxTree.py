@@ -90,13 +90,15 @@ class TTree(object):
         return t.replace(";;",";")
 
 
-    # remove species and return taxon up to first "unknown"
+    # remove species 
     def _get_known_strings(self,string):
         ts = string.split(";")[:-2]
-        try:
-            return ts[:ts.index("unknown")]
-        except ValueError:
-            return ts 
+        return ts
+        # Remove unknowns ... yes? No? ... think about it
+        #try:
+        #    return ts[:ts.index("unknown")]
+        #except ValueError:
+        #    return ts 
 
 
 
