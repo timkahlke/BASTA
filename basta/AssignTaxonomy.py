@@ -41,8 +41,7 @@ from basta import DBUtils as db
 
 class Assigner():
 
-    def
-    __init__(self,evalue,alen,ident,num,minimum,lazy,method,directory,config_path):
+    def __init__(self,evalue,alen,ident,num,minimum,lazy,method,directory,config_path):
         self.evalue = evalue
         self.alen = alen
         self.identity = ident
@@ -65,7 +64,7 @@ class Assigner():
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         out_fh = open(output,"w")
         self.logger.info("\n# [BASTA STATUS] Assigning taxonomies ...")
-        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity):
+        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config):
             taxa = []
             for seq in seq_hits:
                 for hit in seq_hits[seq]:
