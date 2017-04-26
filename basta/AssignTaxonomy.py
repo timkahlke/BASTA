@@ -41,7 +41,8 @@ from basta import DBUtils as db
 
 class Assigner():
 
-    def __init__(self,evalue,alen,ident,num,minimum,lazy,method,directory):
+    def
+    __init__(self,evalue,alen,ident,num,minimum,lazy,method,directory,config_path):
         self.evalue = evalue
         self.alen = alen
         self.identity = ident
@@ -51,7 +52,10 @@ class Assigner():
         self.logger = logging.getLogger()
         self.method = method
         self.directory=directory
-        
+        if config_path:
+            self.config=self._read_config(config_path)
+        else:
+            self.config=self._init_default_config()
 
 
     def _assign_sequence(self,blast,output,db_file):
@@ -149,4 +153,20 @@ class Assigner():
         else:
             print("Unknown type %s" % (n))
             exit(1)
+
+
+    def _read_config(self,cp):
+        mandatory = ['evalue','align_length','query_id','pident','subject_id']
+        config = {}
+        with open(cp,"r") as f:
+            for line in f:
+                ls = line.split("\t")
+                config[ls[0]] = ls[1]
+
+        for m in mandatory:
+            if m not in config:
+                self.logger.error("# [BASTA ERROR] No index field defined for %s in %s!" % (b,cp))
+        
+    def _init_default_config(self):
+        return {'query_id':0,'subject_id':1,'evalue':10,'align_length':3,'pident':2}
 
