@@ -31,7 +31,10 @@ import timeit
 
 
 
-def hit_gen(hit_file,alen,evalue,identity):
+
+
+
+def hit_gen(hit_file,alen,evalue,identity,config):
     """Generator function returning hits grouped by sequence"""
     with open(hit_file, "r") as f:
         hits = {}
@@ -42,9 +45,9 @@ def hit_gen(hit_file,alen,evalue,identity):
                 ls = line.split("\t")
 
                 # next unless good hit
-                if not _check_hit(ls,alen,evalue,identity):
+                if not _check_hit(ls,alen,evalue,identity,config):
                     continue
-                nh = ls[0]
+                nh = ls[config['query_id']]
 
                 # check if new query sequence
                 if hit != nh:
@@ -53,11 +56,11 @@ def hit_gen(hit_file,alen,evalue,identity):
                     if hits:
                         yield hits
                     hit = nh
-                    hits = {hit:[_hit_hash(ls)]}
+                    hits = {hit:[_hit_hash(ls,config)]}
                 else:
                     if not hits:
                         hits[hit] = []
-                    hits[hit].append(_hit_hash(ls))  
+                    hits[hit].append(_hit_hash(ls,config))  
         except StopIteration:
             if hits:
                 yield hits
@@ -67,12 +70,12 @@ def hit_gen(hit_file,alen,evalue,identity):
 
 
 
-def _check_hit(ls,alen,evalue,ident):
-    if float(ls[2]) < ident:
+def _check_hit(ls,alen,evalue,ident,config):
+    if float(ls[config['pident']]) < ident:
         return 0
-    if float(ls[-2]) > evalue:
+    if float(ls[config['evalue']]) > evalue:
         return 0
-    if int(ls[3]) < alen:
+    if int(ls[config['align_length']]) < alen:
         return 0
     return 1
 
@@ -92,7 +95,7 @@ def _get_hit_name(hs):
 
 
 
-def _hit_hash(ls):
-    return {'id':_get_hit_name(ls[1]),'identity':ls[2],'evalue':ls[-2],'alen':ls[3]}
+def _hit_hash(ls,config):
+    return {'id':_get_hit_name(ls[config['subject_id']]),'identity':ls[config['pident']],'evalue':ls[config['evalue']],'alen':ls[config['align_length']]}
 
 
