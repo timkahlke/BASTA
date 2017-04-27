@@ -56,8 +56,6 @@ def _parseBASTA(bf):
     with open(bf,"r") as f:
         for line in f:
             ls = filter(None,line.split("\t"))
-            if len(ls) != 2:
-                print("[Error] Wrong format of line %s" % (line))
             try:
                 counts[ls[1]] += 1 
             except KeyError:
