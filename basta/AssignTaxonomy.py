@@ -57,7 +57,7 @@ class Assigner():
             self.config=self._init_default_config()
 
 
-    def _assign_sequence(self,blast,output,db_file):
+    def _assign_sequence(self,blast,output,db_file,best):
         self.logger.info("\n# [BASTA STATUS] Initializing taxonomy database")
         tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
         self.logger.info("\n# [BASTA STATUS] Initializing mapping database")
@@ -79,7 +79,13 @@ class Assigner():
 
                     taxa.append(tax_string)
             lca = self._getLCS(taxa)
-            out_fh.write("%s\t%s\n" % (seq,lca))
+            if best:
+                try:
+                    out_fh.write("%s\t%s\t%s\n" % (seq,lca,taxa[0]))
+                except IndexError:
+                    out_fh.write("%s\t%s\t%s\n" % (seq,lca,"Unknown"))
+            else:
+                out_fh.write("%s\t%s\n" % (seq,lca))
         out_fh.close()
 
 

@@ -70,7 +70,7 @@ class Main():
         self.logger.info("\n#### Assigning taxonomy to each sequence ###\n")
         (map_file, db_file) = self._get_db_name(args.type)
         assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path)
-        assigner._assign_sequence(args.blast,args.output,db_file)
+        assigner._assign_sequence(args.blast,args.output,db_file,args.best_hit)
         self.logger.info("\n#### Done. Output written to %s" % (args.output))
 
 

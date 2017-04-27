@@ -53,6 +53,7 @@ if __name__=="__main__":
     an_seq_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
     an_seq_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
     an_seq_parser.add_argument("-c", "--config_path", help="Configuration file for non-default output files (see documentation)", default=0)
+    an_seq_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
 
 
     # annotate all sequences in fasta file

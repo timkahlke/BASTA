@@ -71,13 +71,17 @@ def hit_gen(hit_file,alen,evalue,identity,config):
 
 
 def _check_hit(ls,alen,evalue,ident,config):
-    if float(ls[config['pident']]) < ident:
-        return 0
-    if float(ls[config['evalue']]) > evalue:
-        return 0
-    if int(ls[config['align_length']]) < alen:
-        return 0
-    return 1
+    try:
+        if float(ls[config['pident']]) < ident:
+            return 0
+        if float(ls[config['evalue']]) > evalue:
+            return 0
+        if int(ls[config['align_length']]) < alen:
+            return 0
+        return 1
+    except IndexError:
+        print("\n#### [BASTA ERROR] ####\n#\n# INDEX ERROR WHILE CHECKING e-value, alingment length OR percent  identity!!!.\n# Are you sure that your input file has the correct format?\n# (For details check https://github.com/timkahlke/BASTA/wiki/3.-BASTA-Usage#input-file-format)\n#\n#####\n\n")
+        exit(1)
 
 
 
