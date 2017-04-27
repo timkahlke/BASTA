@@ -1,29 +1,29 @@
-#### BASTA - BAsic Sequence Taxonomy Annotation
+# BASTA - BAsic Sequence Taxonomy Annotation
 As the name implies, BASTA assigns taxonomies to sequences or groups of 
 sequences based on the Last Common Ancestor (LCA) of best blast or diamond hits
 similar to MEGAN's LCA algorithm. Taxonomies are inferred from NCBI taxonomies 
 of the best matching hits based on a 7 level taxonomy.
 
-
 Basta has been tested on MacOSX and Ubuntu systems but should be compatible with
-all Unix/linux based operating systems.
+any Unix/linux based operating systems.
 
 
-### Requirements
+1. Install
+For a more detailed install guide please visit
+https://github.com/timkahlke/BASTA/wiki/1.-Installation. 
+
+
+1.1 Requirements
 In the current version BASTA uses levelDB to store NCBI accession_numer-to-
 taxonomy_id mappings as well as the 7 level taxonomy for each NCBI taxonID.
 
-Additional Python packages required are:
+Python packages required (non levelDB related):
 
-* Plyvel
 * gzip
 * hashlib
 
 
-Additionally, for summary plots kronatools 
-(https://github.com/marbl/Krona/wiki/KronaTools) has to be installed.
-
-## Installation of levelDB
+1.1 Installation of levelDB
 LevelDB can eb isntalled using the latest github release candidate
 (https://github.com/google/leveldb).
 
@@ -43,7 +43,6 @@ The easiest way to set up leveDB is using homebrew (https://brew.sh/):
 brew install leveldb
 pip install Plyvel
 
-
 NOTE: Should your install of plyvel fail try to explicitely set the paths to 
 the levelDB files:
 
@@ -51,15 +50,16 @@ pip install --global-option=build_ext --global-option="-I/usr/local/include" \
 --global-option="-L/usr/local/lib" Plyvel
 
 
-## Initial set up and download of a taxonomy levelDB
+1.2 Initial set up and download of a taxonomy levelDB
 
 To work properly BASTA needs to download the NCBI taxonomy files and create a 
 levelDB database for each NCBI taxonID.
 
+A detailed Guide and description can be found at 
+https://github.com/timkahlke/BASTA/wiki/2.-Initial-Setup
+
 To download and process the required files type
-
 ./bin/basta taxonomy 
-
 
 This will download the needed taxonomy files (default ../taxonomy) and create 
 a leveDB database 'complete_taxa.db'
@@ -89,8 +89,11 @@ NOTE: Some mapping files such as the genbank and uniprot mapping files are
       for a list of available parameters)
 
 
-
 ### BASTA taxonomy assignment
+
+For a more detailed guide on BASTA usage please visit:
+https://github.com/timkahlke/BASTA/wiki/3.-BASTA-Usage
+
 BASTA taxonomies are based on best blast/diamond hits to NCBI databases.
 It supports three different modes:
 
@@ -112,13 +115,12 @@ hits of each bin-contig or all genes of each bin-contig.
 
 ### Helper scripts
 
-BASTA provides scripts for filtering seuqences based on assigned taxonomies as
-well as creating Krona plots for visualization of the taxonomy assignments in
-directory ./scripts.
+To visualise BASTA results with Krona kronatools 
+(https://github.com/marbl/Krona/wiki/KronaTools) has to be installed.
 
 
 
-### EXAMPLE
+### EXAMPLE WORKFLOW
 
 # Assign taxonomy for each sequence based on the best 10 blast hits against 
 # NCBI's NT database
