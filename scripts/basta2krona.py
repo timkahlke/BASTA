@@ -42,9 +42,9 @@ def _writeKrona(counts,of):
     _,path = tempfile.mkstemp('','KronaTemp')
     with open(path,"w") as tf:
         for tax in counts:
-            ts = "\t".join(tax.split(";"))
+            ts = "root\t" + "\t".join(tax.split(";"))
             tf.write("%s\t%s" % (counts[tax],ts))
-    
+   
     subprocess.check_call(["ktImportText","-o",of,path])
     os.remove(path) 
 

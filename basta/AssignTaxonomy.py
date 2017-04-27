@@ -76,8 +76,11 @@ class Assigner():
                     if not tax_string:
                         self.logger.warning("\n# [BASTA WARNING] No taxon found for %d in %s" % (int(taxon_id),os.path.join(self.directory,"complete_taxa.db")))
                         continue
-
+                    if tax_string.startswith("unknown;unknown;unknown;unknown;unknown;unknown;"):
+                        continue 
                     taxa.append(tax_string)
+                #print("\n")
+                #print(taxa)
             lca = self._getLCS(taxa)
             if best:
                 try:

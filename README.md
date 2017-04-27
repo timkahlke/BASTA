@@ -1,55 +1,48 @@
 # BASTA
 BAsic Sequence Taxonomy Annotation
 
-As the name implies, BASTA assigns taxonomies to sequences or groups of sequences based on the Last Common Ancestor (LCA) of best blast or diamond hits. Taxonomies are inferred from NCBI taxonomies based on a 7 level taxonomy. 
+As the name implies, BASTA assigns taxonomies to sequences or groups of sequences based on the Last Common Ancestor (LCA) of a number of best hits. BASTA can be customised to run on any kind of tabular output (default blast -outfmt 6) as long as the input file provides values for e-value, percent identity and alignment length. Taxonomies are inferred from NCBI taxonomies based on a 7 level taxonomy. 
+
+For detailed usage and installation instrauctions please visit https://github.com/timkahlke/BASTA/wiki
 
 
 # Requirements
 
-## LevelDB
-BASTA uses levelDB (https://github.com/google/leveldb) and the python wrapper Plyvel as a local database to hold NCBI mappings and taxonomies.
+BASTA uses levelDB (https://github.com/google/leveldb) and the python wrapper Plyvel as a local database to hold NCBI mappings and taxonomies. Additionally, BASTA requires the non-standrad python packages
 
-### LevelDB install Ubuntu
-```
-sudo apt-get update
-sudo apt-get install python-leveldb
-pip install Plyvel
-```
-
-
-
-### LevelDB install MacOSX
-Easiest install is through homebrew (https://brew.sh/) and pip. 
-```
-brew install leveldb
-pip install Plyvel
-```
-
-#### Note
-Often MacOSX can't find the leveldb header files. If so try:
-
-```
-pip install --global-option=build_ext --global-option="-I/usr/local/include" --global-option="-L/usr/local/lib" Plyvel
-```
-
-## Additional Python packages
 * gzip
 * hashlib
-* argparse
 
+To generate Krona plots from BASTA taxonomies Krona (https://github.com/marbl/Krona/wiki/KronaTools) has to be installed, too.
 
-## KronaTools
-For summary plots kronatools is required (https://github.com/marbl/Krona/wiki/KronaTools)
+For a detailed installation guide please visit https://github.com/timkahlke/BASTA/wiki
 
+# Quick start
 
-# Introduction
+## Inital Setup 
 
-Given a blast or diamond output file (tabular output) BASTA tries to infer taxonomies  
-* for each sequence in the given blast/diamond output files 
-* for the complete file based on all hits of all sequences 
-* for each blast/diamond output file in a directory of files
+```
+# set up NCBI taxonomy database
+./bin/basta taxonomy
 
-BASTA taxonomies are based on NCBI databases, e.g., Genbank, NT, Uniprot, PDB, WGS, EST or GSS. BASTA provides methods to download the NCBI taxonomy as well as mapping files for accession numbers of each database to taxonIDs.
+# download and set up genbank and uniprot mappings 
+# NOTE: this might not be needed for you. See Wiki for details
+./bin/basta download gb
+./bin/basta download prot
+```
+
+## Running BASTA
+
+```
+# Infer one LCA for each query sequence of blast against uniprot
+./bin/basta sequence BLAST_OUTPUT_FILE BASTA_OUTPUT_FILE prot
+
+# Infer one LCA for the complete blast output file
+./bin/basta single BLAST_OUTPUT_FILE prot
+
+# Infer one LCA for each blast output file in a given directory
+./bin/basta multiple BLAST_OUTPUT_DIRECTORY BASTA_OUTPUT_FILE prot
+```
 
 # Last Common Ancestor algorithm
 BASTA supports two algorithms: all and majority
@@ -62,62 +55,6 @@ Additionally, if the *lazy* option is used, the user defined minimum number *n* 
 
 ## Majority
 In this case BASTA determines the LCA based on the LCA of the majority of given best hits. Example: if maximum best hit number is set to 5 and 3 best hits are Bacteria and 2 best hits are Archaea, BASTA returns Bacteria as LCA.
-
-# Set up and Usage
-
-## Download and process NCBI taxonomy
-To download and process the required NCBI taxonomy files use
-
-```
-./bin/basta taxonomy
-```
-
-This command will download the NCBI taxonomy dump, create a 7 level taxonomy file (complete_taxa.gz) and import it into a levelDB database (complete_taxa.db)
-
-
-## Download and or create mapping database
-Depending on the database you used to search your query sequences against BASTA will need mapping files to infer the correct taxonID for your hit sequences. To download and process mapping files use
-
-```
-./bin/basta download MAPPING_FILE_TYPE
-```
-
-where MAPPING_FILE_TYPE can be gb (GenBank, RefSeq, NT ...), prot (Uniprot), pbd, wgs, est and gss.
-This will download the required mapping files and create a levelDB mapping database for further use
-
-**NOTE** The mapping files are several GB, i.e., download might take a while. Otherwise you can download the mapping files manually and use the *./bin/basta create_db* command to process them.
-
-
-## BASTA Quick Intro
-A complete list of command and parameters can be listed using `./bin/basta -h` and `./bin/basta/ COMMAND -h`.
-
-
-### Get taxonomy for each sequence
-
-```
-./bin/basta sequence BLAST_OUTPUT_FILE BASTA_OUTPUT_FILE MAPPING_TYPE
-```
-
-MAPPING_TYPE can be gb (NT,GenBank,RefSeq), prot (Uniprot), pdb, wgs, est and gss.
-Additional parameters: E-value, identity, minimum number of hits, maximum number of hits, lazy, estimation method
-
-
-### One taxonomy for the whole file
-
-```
-./bin/basta single BLAST_OUTPUT_FILE MAPPING_TYPE
-```
-
-Final taxonomy will be written to STDOUT
-Additional parameters: E-value, identity, minimum number of hits, maximum number of hits, lazy, estimation method
-
-### One taxon for each blast/diamond file in a directory
-
-```
-./bin/basta multiple DIRECTORY_OF_BLAST_OUTPUT_FILES BASTA_OUTPUT_FILE MAPPING_TYPE
-```
-Additional parameters: E-value, identity, minimum number of hits, maximum number of hits, lazy, estimation method
-
 
 
 
