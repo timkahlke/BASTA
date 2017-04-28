@@ -13,7 +13,7 @@ BASTA uses levelDB (https://github.com/google/leveldb) and the python wrapper Pl
 * gzip
 * hashlib
 
-To generate Krona plots from BASTA taxonomies Krona (https://github.com/marbl/Krona/wiki/KronaTools) has to be installed, too.
+To generate Krona plots from BASTA taxonomies please also install Krona (https://github.com/marbl/Krona/wiki/KronaTools).
 
 For a detailed installation guide please visit https://github.com/timkahlke/BASTA/wiki
 
