@@ -68,3 +68,12 @@ def _init_db(db):
         lookup = plyvel.DB(os.path.abspath(db))
         return lookup
 
+
+def get_db_name(path,db_type):
+    db_name = db_type + "_mapping.db"
+    if not os.path.isdir(os.path.join(path,db_name)):
+        logger = logging.getLogger()
+        logger.error("\n# [BASTA ERROR] No database %s found in %s. Did you forget to create the specified database or was it a typo?" % (db_name,path))
+    return db_name
+
+
