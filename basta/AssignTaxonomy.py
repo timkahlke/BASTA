@@ -45,9 +45,9 @@ class Assigner():
         self.evalue = evalue
         self.alen = alen
         self.identity = ident
-        self.num = num
         self.minimum = minimum
         self.lazy = lazy
+        self.num = num
         self.logger = logging.getLogger()
         self.method = method
         self.directory=directory
@@ -64,7 +64,7 @@ class Assigner():
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         out_fh = open(output,"w")
         self.logger.info("\n# [BASTA STATUS] Assigning taxonomies ...")
-        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config):
+        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num):
             taxa = []
             for seq in seq_hits:
                 for hit in seq_hits[seq]:
@@ -79,8 +79,6 @@ class Assigner():
                     if tax_string.startswith("unknown;unknown;unknown;unknown;unknown;unknown;"):
                         continue 
                     taxa.append(tax_string)
-                #print("\n")
-                #print(taxa)
             lca = self._getLCS(taxa)
             if best:
                 try:
@@ -97,7 +95,7 @@ class Assigner():
         tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         taxa = []
-        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity):
+        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num):
             for seq in seq_hits:
                 for hit in seq_hits[seq]:
                     taxon_id = map_lookup.get(hit['id'])
@@ -144,25 +142,6 @@ class Assigner():
         return tt
 
 
-
-    def _get_db(self,n):
-        if n == "prot":
-            return "prot_mapping.db"
-        elif n == "gss":
-            return "gss_mapping.db"
-        elif n == "gb":
-            return "gb_mapping.db"
-        elif n == "wgs":
-            return "wgs_mapping.db"
-        elif n == "est":
-            return "est_mapping.db"
-        elif n == "pdb":
-            return "pdb_mapping.db"
-        else:
-            print("Unknown type %s" % (n))
-            exit(1)
-
-
     def _read_config(self,cp):
         mandatory = ['evalue','align_length','query_id','pident','subject_id']
         config = {}
@@ -174,6 +153,7 @@ class Assigner():
         for m in mandatory:
             if m not in config:
                 self.logger.error("# [BASTA ERROR] No index field defined for %s in %s!" % (b,cp))
+                sys.exit()
         return config
         
     def _init_default_config(self):

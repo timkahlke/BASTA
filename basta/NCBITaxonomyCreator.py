@@ -77,6 +77,7 @@ class Creator():
             current = self._fill_taxon_post_rank(tree['rank'],current)
             if len(current.split(";"))-1 != len(self.ranks):
                 self.logger.error("\n# [BASTA ERROR] Wrong number of taxa in string %s" % (current))
+                sys.exit()
         else:
             current = taxon_string
             if len(taxon_string.split(";")) < len(self.ranks):
@@ -86,6 +87,7 @@ class Creator():
             current = self._fill_taxon_post_rank(self.ranks[len(current.split(";"))-2],current)
             if len(current.split(";"))-1 != len(self.ranks):
                 self.logger.error("\n# [BASTA ERROR] Wrong number of taxa in string %s" % (current))
+                sys.exit()
 
         oh.write("%s\t%s\n" % (taxon_id,current))
 

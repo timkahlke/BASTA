@@ -34,7 +34,7 @@ import timeit
 
 
 
-def hit_gen(hit_file,alen,evalue,identity,config):
+def hit_gen(hit_file,alen,evalue,identity,config,num):
     """Generator function returning hits grouped by sequence"""
     with open(hit_file, "r") as f:
         hits = {}
@@ -60,6 +60,9 @@ def hit_gen(hit_file,alen,evalue,identity,config):
                 else:
                     if not hits:
                         hits[hit] = []
+                    if num and len(hits[hit]) == num:
+                        continue
+
                     hits[hit].append(_hit_hash(ls,config))  
         except StopIteration:
             if hits:
@@ -81,7 +84,7 @@ def _check_hit(ls,alen,evalue,ident,config):
         return 1
     except IndexError:
         print("\n#### [BASTA ERROR] ####\n#\n# INDEX ERROR WHILE CHECKING e-value, alingment length OR percent  identity!!!.\n# Are you sure that your input file has the correct format?\n# (For details check https://github.com/timkahlke/BASTA/wiki/3.-BASTA-Usage#input-file-format)\n#\n#####\n\n")
-        exit(1)
+        sys.exit()
 
 
 

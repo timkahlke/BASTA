@@ -62,9 +62,26 @@ def create_db(path,f,of,i1,i2):
             lookup.close()
     except IOError:
         logger.error("\n# [BASTA ERROR] No file %s: did you forget to download mapping file (parameter -d True)?" % (ip))
+        sys.exit()
 
 
 def _init_db(db):
         lookup = plyvel.DB(os.path.abspath(db))
         return lookup
+
+
+def get_db_name(path,db_type):
+    db_name = db_type + "_mapping.db"
+    if not os.path.isdir(os.path.join(path,db_name)):
+        logger = logging.getLogger()
+        logger.error("\n# [BASTA ERROR] No database %s found in %s. Did you forget to create the specified database or was it a typo?" % (db_name,path))
+        sys.exit()
+    return db_name
+
+def _check_complete(path):
+    if os.path.isdir(os.path.join(path,"complete_taxa.db")):
+        return 1
+    else:
+        return None 
+
 
