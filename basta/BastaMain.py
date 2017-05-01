@@ -53,10 +53,19 @@ class Main():
 
     def run_basta(self,args):
         if args.subparser_name == 'sequence':
+            if not dbutils._check_complete(args.directory):
+                self.logger.error("\n[BASTA ERROR] Couldn't find complete_taxa.db in %s. Did you run initial \'basta download\'?" % (args.directory))
+                sys.exit()
             self._basta_sequence(args)
         elif args.subparser_name == 'single':
+            if not dbutils._check_complete(args.directory):
+                self.logger.error("\n[BASTA ERROR] Couldn't find complete_taxa.db in %s. Did you run initial \'basta download\'?" % (args.directory))
+                sys.exit()
             self._basta_single(args)
         elif args.subparser_name == 'multiple':
+            if not dbutils._check_complete(args.directory):
+                self.logger.error("\n[BASTA ERROR] Couldn't find complete_taxa.db in %s. Did you run initial \'basta download\'?" % (args.directory))
+                sys.exit()
             self._basta_multiple(args)
         elif args.subparser_name == 'download':
             self._basta_download(args)
