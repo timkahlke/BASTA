@@ -34,7 +34,7 @@ import timeit
 
 
 
-def hit_gen(hit_file,alen,evalue,identity,config,num,method):
+def hit_gen(hit_file,alen,evalue,identity,config,num):
     """Generator function returning hits grouped by sequence"""
     with open(hit_file, "r") as f:
         hits = {}
