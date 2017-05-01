@@ -64,7 +64,7 @@ class Assigner():
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         out_fh = open(output,"w")
         self.logger.info("\n# [BASTA STATUS] Assigning taxonomies ...")
-        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num,self.method):
+        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num):
             taxa = []
             for seq in seq_hits:
                 for hit in seq_hits[seq]:
@@ -95,7 +95,7 @@ class Assigner():
         tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         taxa = []
-        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num,self.method):
+        for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num):
             for seq in seq_hits:
                 for hit in seq_hits[seq]:
                     taxon_id = map_lookup.get(hit['id'])
