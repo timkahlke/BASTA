@@ -104,10 +104,10 @@ class Main():
 
 
     def _basta_download(self,args):
-        if not os.path.exists(args.mapping_dir):
-            os.makedirs(args.mapping_dir)
+        if not os.path.exists(args.directory):
+            os.makedirs(args.directory)
         self.logger.info("\n##### Downloading and processing mapping file(s) from NCBI ###\n")
-        (map_file, db_file) = self._get_db_name(args.type)
+        #db_file = dbutils.get_db_name(args.directory,args.type)
         if args.type == "prot":
             map_file = "prot.accession2taxid.gz"
             db_file = "prot_mapping.db"
@@ -128,9 +128,9 @@ class Main():
             db_file = "gb_mapping.db"
 
         self.logger.info("\n# [BASTA STATUS] Downloading mapping files\n")
-        dutils.down_and_check(args.ftp,map_file,args.mapping_dir)
+        dutils.down_and_check(args.ftp,map_file,args.directory)
         self.logger.info("\n# [BASTA STATUS] Creating mapping database\n")
-        dbutils.create_db(args.mapping_dir,map_file,db_file,0,2)
+        dbutils.create_db(args.directory,map_file,db_file,0,2)
         self.logger.info("\n##### Done. Downloaded and processed file %s\n" % (map_file))
 
 
@@ -138,7 +138,7 @@ class Main():
         if not os.path.exists(args.database_dir):
             os.makedirs(args.database_dir)
         self.logger.info("\n#### Creating database\n")
-        dbutils.create_db(args.database_dir,args.input,args.output,args.key,args.value)
+        dbutils.create_db(args.directory,args.input,args.output,args.key,args.value)
         self.logger.info("\n#### Done. Processed file %s\n" % (args.input))
 
 
