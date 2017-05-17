@@ -3,7 +3,7 @@
 import os
 import sys
 import argparse
-
+import pytest
 
 ############
 #
@@ -38,9 +38,9 @@ def main(args):
     oh = open(args.output,"w")
     p = 0
     with open(args.fasta) as f:
-        for line in f:
-            if line.startswith(">"):
-                if filter(None,line.replace(">"," ").split())[0] in hit_seqs:
+        for (num,line) in enumerate(f):
+            if line[0]==">":
+                if line.replace(">"," ").split()[0] in hit_seqs:
                     p = 1
                 else:
                     p = 0
@@ -51,10 +51,9 @@ def main(args):
 
 
 
-
 def _get_seqs(bf,l,n):
     levels = ["kingdom","phylum","class","order","family","genus","species"]
-    seqs = [] 
+    seqs = {} 
 
     with open(bf,"r") as f:
         for line in f:
@@ -62,12 +61,12 @@ def _get_seqs(bf,l,n):
             if l:
                 try:
                     if ls[1].split(";")[levels.index(l)] == n:
-                        seqs.append(ls[0])
+                        seqs[ls[0]]=1
                 except IndexError:
                     pass
             else:
                 if n in ls[1]:
-                    seqs.append(ls[0])
+                    seqs[ls[0]]=1
     return seqs
 
 
