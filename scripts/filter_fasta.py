@@ -3,8 +3,7 @@
 import os
 import sys
 import argparse
-import pytest
-
+import logging
 ############
 #
 #   filter fasta file
@@ -34,11 +33,18 @@ import pytest
 
 def main(args):
     
+    logging.basicConfig(format='',level=logging.INFO)
+    logger = logging.getLogger()
+
+    logger.info("\n[BASTA STATUS] Reading BASTA taxonomy\n")
     hit_seqs = _get_seqs(args.basta,args.level,args.name)
     oh = open(args.output,"w")
     p = 0
+    logger.info("\n[BASTA STATUS] Parsing fasta file\n")
     with open(args.fasta) as f:
         for (num,line) in enumerate(f):
+            if not num%1000000:
+                logger.info("\tLines parsed: %d" % num)
             if line[0]==">":
                 if line.replace(">"," ").split()[0] in hit_seqs:
                     p = 1
@@ -48,6 +54,7 @@ def main(args):
                 continue
             oh.write(line)
     oh.close()
+    logger.info("\n[BASTA STATUS] Done.\n")
 
 
 
