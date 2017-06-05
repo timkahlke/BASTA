@@ -135,8 +135,8 @@ class Main():
 
 
     def _basta_create_db(self,args):
-        if not os.path.exists(args.database_dir):
-            os.makedirs(args.database_dir)
+        if not os.path.exists(args.directory):
+            os.makedirs(args.directory)
         self.logger.info("\n#### Creating database\n")
         dbutils.create_db(args.directory,args.input,args.output,args.key,args.value)
         self.logger.info("\n#### Done. Processed file %s\n" % (args.input))
