@@ -34,19 +34,27 @@ import tempfile
 
 
 def main(args):
-    counts = _parseBASTA(args.input)
-    _writeKrona(counts,args.output)
+    file_counts ={} 
+    for f in args.input.split(","):
+        file_counts[f] = _parseBASTA(f)
+    _writeKrona(file_counts,args.output)
 
 def _writeKrona(counts,of):
 
-    _,path = tempfile.mkstemp('','KronaTemp')
-    with open(path,"w") as tf:
-        for tax in counts:
-            ts = "root\t" + "\t".join(tax.split(";"))
-            tf.write("%s\t%s" % (counts[tax],ts))
-   
-    subprocess.check_call(["ktImportText","-o",of,path])
-    os.remove(path) 
+    paths = []
+    for c in counts:
+        fn = c.split("/")[-1]
+        pathfd,path = tempfile.mkstemp()
+        with os.fdopen(pathfd,"w") as tf:
+            for tax in counts[c]:
+                ts = "root\t" + "\t".join(tax.split(";"))
+                tf.write("%s\t%s" % (counts[c][tax],ts))
+        paths.append(str(path) + "," + str(fn))
+    fn_str = " ".join(paths)
+    cmd = "ktImportText -o %s %s" % (of,fn_str)
+    subprocess.check_call(cmd,shell=True)
+    for p in paths:
+        os.remove(p.split(",")[0]) 
 
 
 
@@ -66,7 +74,7 @@ def _parseBASTA(bf):
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="Create Krona plots from basta output files")
-    parser.add_argument("input", help="BASTA annotation file")
+    parser.add_argument("input", help="BASTA annotation file(s) separated by comma")
     parser.add_argument("output", help="Output file")
 
     args =  parser.parse_args()
