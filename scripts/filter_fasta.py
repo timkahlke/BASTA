@@ -46,7 +46,7 @@ def main(args):
             if not num%1000000:
                 logger.info("\tLines parsed: %d" % num)
             if line[0]==">":
-                if line.replace(">"," ").split()[0] in hit_seqs:
+                if line.replace(">"," ").replace("."," ").split()[0] in hit_seqs:
                     p = 1
                 else:
                     p = 0
