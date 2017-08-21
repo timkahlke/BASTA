@@ -75,17 +75,17 @@ def _get_clusters(uc_file,taxa):
         for line in f:
             cols = line.split()
             if cols[0] == "S":
-                if cols[8] in taxa:
-                    clusters[cols[8]] = [taxa[cols[8]]]
+                if cols[8].split(".")[0] in taxa:
+                    clusters[cols[8].split(".")[0]] = [taxa[cols[8].split(".")[0]]]
                 else:
-                    clusters[cols[8]] = ["NA"]
+                    clusters[cols[8].split(".")[0]] = ["NA"]
             else:
                 if cols[0] == "C":
                     continue
-                if cols[9] in taxa:
-                    clusters[cols[9]].append(taxa[cols[8]])
+                if cols[9].split(".")[0] in taxa:
+                    clusters[cols[9].split(".")[0]].append(taxa[cols[8].split(".")[0]])
                 else:
-                    clusters[cols[9]].append("NA")
+                    clusters[cols[9].split(".")[0]].append("NA")
                 
     return clusters
 
