@@ -83,7 +83,10 @@ def _get_clusters(uc_file,taxa):
                 if cols[0] == "C":
                     continue
                 if cols[9].split(".")[0] in taxa:
-                    clusters[cols[9].split(".")[0]].append(taxa[cols[8].split(".")[0]])
+                    if cols[8].split(".")[0] in taxa:
+                        clusters[cols[9].split(".")[0]].append(taxa[cols[8].split(".")[0]])
+                    else:
+                        clusters[cols[9].split(".")[0]].append("Unknown!")
                 else:
                     clusters[cols[9].split(".")[0]].append("NA")
                 
