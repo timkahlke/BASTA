@@ -62,6 +62,7 @@ class Assigner():
         tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
         self.logger.info("\n# [BASTA STATUS] Initializing mapping database")
         map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
+        nofo_map = []
         out_fh = open(output,"w")
         self.logger.info("\n# [BASTA STATUS] Assigning taxonomies ...")
         for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num):
@@ -70,12 +71,16 @@ class Assigner():
                 for hit in seq_hits[seq]:
                     taxon_id = map_lookup.get(hit['id'])
                     if not taxon_id:
-                        self.logger.warning("\n# [BASTA WARNING] No mapping found for %s in %s" % (hit['id'],db_file))
-                        continue
+                        if not hit['id'] in nofo_map:
+                            self.logger.warning("\n# [BASTA WARNING] No mapping found for %s in %s" % (hit['id'],db_file))
+                            nofo_map.append(hit['id'])
+                            continue
                     tax_string = tax_lookup.get(taxon_id)
                     if not tax_string:
-                        self.logger.warning("\n# [BASTA WARNING] No taxon found for %d in %s" % (int(taxon_id),os.path.join(self.directory,"complete_taxa.db")))
-                        continue
+                        if not taxon_id in nofo_map:
+                            self.logger.warning("\n# [BASTA WARNING] No taxon found for %d in %s" % (int(taxon_id),os.path.join(self.directory,"complete_taxa.db")))
+                            nofo_map.append(taxon_id)
+                            continue
                     if tax_string.startswith("unknown;unknown;unknown;unknown;unknown;unknown;"):
                         continue 
                     taxa.append(tax_string)
