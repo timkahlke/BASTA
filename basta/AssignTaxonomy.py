@@ -52,6 +52,7 @@ class Assigner():
         self.method = method
         self.output = output
         self.directory=directory
+        self.info_file=""
         if config_path:
             self.config=self._read_config(config_path)
         else:
@@ -63,11 +64,14 @@ class Assigner():
         (tax_lookup, map_lookup) = self._get_lookups(db_file)
         nofo_map = []
         out_fh = open(self.output,"w")
+        print(self.info_file)
         for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num):
             for seq in seq_hits:
                 taxa = []
                 self._get_tax_list(seq_hits[seq],map_lookup,tax_lookup,taxa,nofo_map)
                 lca = self._getLCS(taxa)
+                if self.info_file:
+                    self._print_info(taxa,seq)
                 self._print(out_fh,seq,lca,best,taxa)
         out_fh.close()
 
@@ -82,6 +86,8 @@ class Assigner():
             for seq in seq_hits:
                 self._get_tax_list(seq_hits[seq],map_lookup,tax_lookup,taxa,nofo_map)
         lca = self._getLCS([x for x in taxa if x])
+        if self.info_file:
+            self._print_info(taxa,"Sequence")
         self._print(out_fh,"Sequence",lca,best,taxa)
         return lca
 
@@ -99,6 +105,8 @@ class Assigner():
                 for seq in seq_hits:
                     self._get_tax_list(seq_hits[seq],map_lookup,tax_lookup,taxa,nofo_map)
             lca = self._getLCS([x for x in taxa if x])
+            if self.info_file:
+                self._print_info(taxa,bf)
             self._print(out_fh,bf,lca,best,taxa)
         out_fh.close() 
 
@@ -120,6 +128,26 @@ class Assigner():
         else:
             fh.write("%s\t%s\n" % (name,lca))
 
+
+    def _print_info(self,taxa,seq):
+        ttree = self._getTT(taxa)
+        if os.path.exists(self.info_file):
+            inf = open(self.info_file,"a")
+        else:
+            inf = open(self.info_file,"w")
+        inf.write("###%s\n" % (seq))
+        self._print_info_branch("",ttree.tree,inf)
+        inf.write("\n\n")
+        inf.close()
+    
+    def _print_info_branch(self,ts,t,info_file):
+        for b in t:
+            if b == "count":
+                info_file.write("%d\t%s\n" % (t["count"],ts))
+            else:
+                self._print_info_branch(ts + b + ";",t[b],info_file)
+       
+            
     
     def _getLCS(self,l):
         tree = self._getTT(l)
