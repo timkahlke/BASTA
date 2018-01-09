@@ -5,6 +5,9 @@ As the name implies, BASTA assigns taxonomies to sequences or groups of sequence
 
 For detailed usage and installation instructions please visit https://github.com/timkahlke/BASTA/wiki
 
+### Citing BASTA
+Release v1.2 can be cited as "Kahlke, T. (2018, January 9). Basta 1.2 - Basic Sequence Taxonomy Annotation (Version 1.2). Zenodo. https://doi.org/10.5281/zenodo.1137870"
+
 
 # Requirements
 
