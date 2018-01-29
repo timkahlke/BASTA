@@ -1,5 +1,6 @@
 name: py27
 channels:
+- bioconda
 - bnoon
 - salilab
 - defaults
@@ -103,6 +104,7 @@ dependencies:
 - jupyter_core
 - jupyterlab
 - jupyterlab_launcher
+- krona
 - lazy-object-proxy
 - libcxx
 - libcxxabi
