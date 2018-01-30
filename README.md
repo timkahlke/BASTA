@@ -14,14 +14,14 @@ Release v1.2 can be cited as "Kahlke, T. (2018, January 9). Basta 1.2 - Basic Se
 BASTA uses the [conda](https://conda.io/docs/) environment manager.
 Once you have conda [installed](https://conda.io/miniconda.html), do the following:
 
-On OSX/max:
+**On OSX/mac**:
 
 ```
 conda env create -f environment_osx.yml
 source activate py27
 ```
 
-On Linux:
+**On Linux**:
 
 ```
 conda env create -f environment_linux.yml
