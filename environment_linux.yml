@@ -1,10 +1,11 @@
 name: py27
 channels:
-- bioconda
 - bnoon
-- salilab
+- bioconda
 - defaults
 dependencies:
+- krona
+- perl-threaded
 - leveldb
 - plyvel
 - snappy
@@ -13,8 +14,6 @@ dependencies:
 - anaconda-client
 - anaconda-navigator
 - anaconda-project
-- appnope
-- appscript
 - asn1crypto
 - astroid
 - astropy
@@ -33,6 +32,7 @@ dependencies:
 - bottleneck
 - bzip2
 - ca-certificates
+- cairo
 - cdecimal
 - certifi
 - cffi
@@ -63,20 +63,24 @@ dependencies:
 - filelock
 - flask
 - flask-cors
+- fontconfig
 - freetype
 - funcsigs
 - functools32
 - futures
 - get_terminal_size
-- gettext
 - gevent
 - glib
 - glob2
 - gmp
 - gmpy2
+- graphite2
 - greenlet
 - grin
+- gst-plugins-base
+- gstreamer
 - h5py
+- harfbuzz
 - hdf5
 - heapdict
 - html5lib
@@ -104,18 +108,18 @@ dependencies:
 - jupyter_core
 - jupyterlab
 - jupyterlab_launcher
-- krona
 - lazy-object-proxy
-- libcxx
-- libcxxabi
 - libedit
 - libffi
-- libgfortran
-- libiconv
+- libgcc-ng
+- libgfortran-ng
 - libpng
 - libsodium
 - libssh2
+- libstdcxx-ng
 - libtiff
+- libtool
+- libxcb
 - libxml2
 - libxslt
 - llvmlite
@@ -153,7 +157,9 @@ dependencies:
 - pandas
 - pandoc
 - pandocfilters
+- pango
 - partd
+- patchelf
 - path.py
 - pathlib2
 - patsy
@@ -163,13 +169,14 @@ dependencies:
 - pickleshare
 - pillow
 - pip
+- pixman
 - pkginfo
 - ply
 - prompt_toolkit
 - psutil
 - ptyprocess
 - py
-- pyaudio
+- pycairo
 - pycodestyle
 - pycosat
 - pycparser
@@ -185,9 +192,8 @@ dependencies:
 - pysocks
 - pytables
 - pytest
-- python
+- python=2.7
 - python-dateutil
-- python.app
 - pytz
 - pywavelets
 - pyyaml
@@ -242,7 +248,6 @@ dependencies:
 - wrapt
 - xlrd
 - xlsxwriter
-- xlwings
 - xlwt
 - xz
 - yaml
@@ -254,13 +259,19 @@ dependencies:
   - backports.functools-lru-cache
   - backports.shutil-get-terminal-size
   - backports.ssl-match-hostname
+  - colormath
   - et-xmlfile
+  - future
   - ipython-genutils
   - jupyter-client
   - jupyter-console
   - jupyter-core
   - jupyterlab-launcher
+  - lzstring
+  - markdown
   - prompt-toolkit
   - ruamel-yaml
+  - simplejson
+  - spectra
   - tables
-prefix: //anaconda/envs/py27
+prefix: /home/maxime/anaconda3/envs/py27
