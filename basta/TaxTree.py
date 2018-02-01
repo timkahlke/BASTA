@@ -93,14 +93,15 @@ class TTree(object):
 
     # remove species 
     def _get_known_strings(self,string):
-        ts = string.split(";")[:-2]
-        return ts
+        # Previously removed species to not remove unknowns
+        # ts = string.split(";")[:-2]
         # Remove unknowns ... yes? No? ... think about it
         #try:
         #    return ts[:ts.index("unknown")]
         #except ValueError:
         #    return ts 
-
+        ts = string.split(";")
+        return ts
 
 
 
