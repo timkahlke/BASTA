@@ -78,16 +78,20 @@ class Main():
     def _basta_sequence(self,args):
         self.logger.info("\n#### Assigning taxonomy to each sequence ###\n")
         db_file = dbutils.get_db_name(args.directory,args.type)
-        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path)
-        assigner._assign_sequence(args.blast,args.output,db_file,args.best_hit)
+        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path,args.output)
+        if args.verbose:
+            assigner.info_file = args.verbose
+        assigner._assign_sequence(args.blast,db_file,args.best_hit)
         self.logger.info("\n#### Done. Output written to %s" % (args.output))
 
 
     def _basta_single(self,args):
         self.logger.info("\n#### Assigning one taxonomy based on all sequences ###\n")
         db_file = dbutils.get_db_name(args.directory,args.type)
-        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path) 
-        lca = assigner._assign_single(args.blast,db_file)
+        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path,args.output) 
+        if args.verbose:
+            assigner.info_file = args.verbose
+        lca = assigner._assign_single(args.blast,db_file,args.best_hit)
         self.logger.info("\n##### Results ("+ args.tax_method +")#####\n")
         self.logger.info("Last Common Ancestor: %s\n" % (lca))
         self.logger.info("\n###################\n")
@@ -97,8 +101,10 @@ class Main():
         self.logger.info("\n####  Assigning one taxonomy for each file ###\n")
         db_file = ""
         db_file = dbutils.get_db_name(args.directory,args.type)
-        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path)
-        assigner._assign_multiple(args.blast,args.output,db_file)
+        assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.lazy,args.tax_method,args.directory,args.config_path,args.output)
+        if args.verbose:
+            assigner.info_file = args.verbose
+        assigner._assign_multiple(args.blast,db_file,args.best_hit)
         self.logger.info("\n###### Done. Output written to %s" % (args.output))
 
 

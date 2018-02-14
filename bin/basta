@@ -54,11 +54,13 @@ if __name__=="__main__":
     an_seq_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
     an_seq_parser.add_argument("-c", "--config_path", help="Configuration file for non-default output files (see documentation)", default=0)
     an_seq_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
+    an_seq_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
 
 
     # annotate all sequences in fasta file
     an_single_parser = subparsers.add_parser('single', description='Estimate one single taxonomy based on all query sequences')
     an_single_parser.add_argument("blast", help="blast/diamond result file (tabular format")
+    an_single_parser.add_argument("output", help="output file name")
     an_single_parser.add_argument("type", help="Type of mapping file")
     an_single_parser.add_argument("-t","--tax_method", help="Method for taxon estimation (default: all)", choices=['all','majority'],default="all")
     an_single_parser.add_argument("-e", "--evalue", help="maximum evalue of good hit (default=0.00001)",type=float, default=0.00001)
@@ -69,6 +71,9 @@ if __name__=="__main__":
     an_single_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
     an_single_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
     an_single_parser.add_argument("-c", "--config_path", help="Configuration file for non-default output files (see documentation)", default=0)
+    an_single_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
+    an_single_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
+
 
     # batch sequence annotation
     an_dir_parser = subparsers.add_parser('multiple', description='Estimate one taxonomy for each file in given directory')
@@ -84,6 +89,8 @@ if __name__=="__main__":
     an_dir_parser.add_argument("-a", "--lazy", help="if set to False only contigs with at least minimum hits will be considered (default: False)", type=bool, default=False)
     an_dir_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
     an_dir_parser.add_argument("-c", "--config_path", help="Configuration file for non-default output files (see documentation)", default=0)
+    an_dir_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
+    an_dir_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
 
     # download NCBI mappings
     download_parser = subparsers.add_parser('download', description='Download NCBI taxonomy file(s)')

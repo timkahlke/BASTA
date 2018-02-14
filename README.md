@@ -1,31 +1,44 @@
 # BASTA
 BAsic Sequence Taxonomy Annotation
 
-As the name implies, BASTA assigns taxonomies to sequences or groups of sequences based on the Last Common Ancestor (LCA) of a number of best hits. BASTA can be customised to run on any kind of tabular output (default = blast -outfmt 6) as long as the input file provides values for e-value, percent identity and alignment length. Taxonomies are inferred from NCBI taxonomies based on a 7 level taxonomy. 
+As the name implies, BASTA assigns taxonomies to sequences or groups of sequences based on the Last Common Ancestor (LCA) of a number of best hits. BASTA can be customised to run on any kind of tabular output (default = blast -outfmt 6) as long as the input file provides values for e-value, percent identity and alignment length. Taxonomies are inferred from NCBI taxonomies based on a 7 level taxonomy.
 
 For detailed usage and installation instructions please visit https://github.com/timkahlke/BASTA/wiki
+
+### Citing BASTA
+Release v1.2 can be cited as "Kahlke, T. (2018, January 9). Basta 1.2 - Basic Sequence Taxonomy Annotation (Version 1.2). Zenodo. https://doi.org/10.5281/zenodo.1137870"
 
 
 # Requirements
 
-BASTA uses levelDB (https://github.com/google/leveldb) and the python wrapper Plyvel as a local database to hold NCBI mappings and taxonomies. Additionally, BASTA requires the non-standrad python packages
+BASTA can be installed using the [conda](https://conda.io/docs/) environment manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
 
-* gzip
-* hashlib
+Once you have conda [installed](https://conda.io/miniconda.html), do the following:
 
-To generate Krona plots from BASTA taxonomies please also install Krona (https://github.com/marbl/Krona/wiki/KronaTools).
+**On OSX/mac**:
 
-For a detailed installation guide please visit https://github.com/timkahlke/BASTA/wiki
+```
+conda env create -f environment_osx.yml
+source activate py27
+```
+
+**On Linux**:
+
+```
+conda env create -f environment_linux.yml
+source activate py27
+```
+
 
 # Quick start
 
-## Inital Setup 
+## Inital Setup
 
 ```
 # set up NCBI taxonomy database
 ./bin/basta taxonomy
 
-# download and set up genbank and uniprot mappings 
+# download and set up genbank and uniprot mappings
 # NOTE: this might not be needed for you. See Wiki for details
 ./bin/basta download gb
 ./bin/basta download prot

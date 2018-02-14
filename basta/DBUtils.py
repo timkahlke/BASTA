@@ -36,8 +36,14 @@ import timeit
 
 def create_db(path,f,of,i1,i2):
 
+    of = _check_file_name(of)
+
     logger = logging.getLogger()
-    ip = os.path.join(path,f)
+    if os.path.exists(f):
+        ip = f
+    else:
+        ip = os.path.join(path,f)
+
     op = os.path.join(path,of)
 
     lookup = plyvel.DB(op, create_if_missing=True)
@@ -46,7 +52,7 @@ def create_db(path,f,of,i1,i2):
 
     timetotal = 0
     try:
-        with gzip.open(ip,"r") as f:
+        with (gzip.open(ip,"r") if ip.endswith(".gz") else open(ip,"r")) as f:
             start_time = timeit.default_timer()
             for count,line in enumerate(f):
                 if not count % 1000000:
@@ -69,6 +75,13 @@ def _init_db(db):
         lookup = plyvel.DB(os.path.abspath(db))
         return lookup
 
+def _check_file_name(name):
+    if not name.endswith(".db"):
+        return (name + ".db")
+    else:
+        return name
+
+
 
 def get_db_name(path,db_type):
     db_name = db_type + "_mapping.db"
@@ -83,5 +96,4 @@ def _check_complete(path):
         return 1
     else:
         return None 
-
 
