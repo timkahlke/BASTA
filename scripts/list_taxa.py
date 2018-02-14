@@ -85,7 +85,6 @@ def _get_seqs(lf):
         for line in f:
             seq=line.replace(" ","").replace("\n","")
             seqs.append(seq)
-    print(seqs)
     return seqs
 
 

@@ -81,7 +81,7 @@ class TTree(object):
     # a) is included in all given strings
     # b) includes more hits than given minimum
     def create_lca(self,tree,t,min):
-        k = [x for x in tree if x != "count"]
+        k = [x for x in tree if x != 'count']
         if len(k) <2:
             for b in tree:
                 if b == "count":

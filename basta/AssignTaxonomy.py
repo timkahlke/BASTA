@@ -114,11 +114,11 @@ class Assigner():
 
 
     def _assign_multiple(self,blast_dir,out,db_file):
-        out_fh = open(output,"w")
+        out_fh = open(out,"w")
         out_fh.write("#File\tLCA\n")
         for bf in os.listdir(blast_dir):
             self.logger.info("\n# [BASTA STATUS] - Estimating Last Common Ancestor for file  %s" % (str(bf)))
-            lca = _assign_single(os.path.join(blast_dir,bf),db_file)
+            lca = self._assign_single(os.path.join(blast_dir,bf),db_file)
             out_fh.write("%s\t%s\n" %(bf,lca))
         out_fh.close() 
 
