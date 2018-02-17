@@ -94,7 +94,7 @@ if __name__=="__main__":
 
     # download NCBI mappings
     download_parser = subparsers.add_parser('download', description='Download NCBI taxonomy file(s)')
-    download_parser.add_argument("type", help="Type of mapping file to be downloaded (prot, est, wgs, gss or gb)", choices=['wgs','prot','est','gss','gb','pdb'])
+    download_parser.add_argument("type", help="Type of mapping file to be downloaded (prot, est, wgs, gss or gb)", choices=['wgs','prot','est','gss','gb','pdb','uni'])
     download_parser.add_argument("-d","--directory", help="Directory of mapping files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
     download_parser.add_argument("-f", "--ftp", help="URL to NCBI ftp for accession mapping (default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/)", default="ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/")
 

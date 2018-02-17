@@ -117,6 +117,16 @@ class Main():
         if args.type == "prot":
             map_file = "prot.accession2taxid.gz"
             db_file = "prot_mapping.db"
+        elif args.type == "uni":
+            # Another quick'n dirty hardcoded thing do add uniprot to 
+            # db type prot ...
+            map_file = "idmapping_selected.tab.gz"
+            db_file = "prot_mapping.db"
+            self.logger.info("\n# [BASTA STATUS] Downloading mapping file\n")
+            dutils.down("ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/",map_file,args.directory)
+            self.logger.info("\n# [BASTA STATUS] Creating mapping database\n")
+            dbutils.create_db(args.directory,map_file,db_file,0,12)
+            return
         elif args.type == "wgs":
             map_file = "nucl_wgs.accession2taxid.gz"
             db_file = "wgs_mapping.db"
