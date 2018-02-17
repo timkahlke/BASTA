@@ -100,14 +100,8 @@ class Assigner():
         nofo_map = []
         for bf in os.listdir(blast_dir):
             self.logger.info("\n# [BASTA STATUS] - Estimating Last Common Ancestor for file  %s" % (str(bf)))
-            taxa = []
-            for seq_hits in futils.hit_gen(os.path.join(blast_dir,bf),self.alen,self.evalue,self.identity,self.config,self.num):
-                for seq in seq_hits:
-                    self._get_tax_list(seq_hits[seq],map_lookup,tax_lookup,taxa,nofo_map)
-            lca = self._getLCS([x for x in taxa if x])
-            if self.info_file:
-                self._print_info(taxa,bf)
-            self._print(out_fh,bf,lca,best,taxa)
+            lca = self._assign_single(os.path.join(blast_dir,bf),db_file)
+            out_fh.write("%s\t%s\n" %(bf,lca))
         out_fh.close() 
 
 
