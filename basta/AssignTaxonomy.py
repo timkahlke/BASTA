@@ -170,7 +170,6 @@ class Assigner():
                     nofo_map.append(hit['id'])
                 continue
             tax_string = tax_lookup.get(taxon_id)
-            print(tax_string)
             if not tax_string:
                 if not taxon_id in nofo_map:
                     self.logger.warning("\n# [BASTA WARNING] No taxon found for %d" % (int(taxon_id)))
