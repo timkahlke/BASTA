@@ -11,7 +11,7 @@ Release v1.2 can be cited as "Kahlke, T. (2018, January 9). Basta 1.2 - Basic Se
 
 # Requirements
 
-BASTA can be installed using the [conda](https://conda.io/docs/) environment manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
+BASTA dependencies and requirements can be installed using the [conda](https://conda.io/docs/) environment manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
 
 Once you have conda [installed](https://conda.io/miniconda.html), do the following:
 
@@ -28,7 +28,6 @@ source activate py27
 conda env create -f environment_linux.yml
 source activate py27
 ```
-
 
 # Quick start
 
