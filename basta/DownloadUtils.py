@@ -52,11 +52,12 @@ def check_md5(f,path):
 def down_and_check(ftp,fn,out_dir):
 
     down(ftp,fn,out_dir)
-    md5name = fn + ".md5"
+    md5 = fn + ".md5"
     down(ftp,md5,out_dir)
 
+    logger = logging.getLogger()
     logger.info("\n# [BASTA STATUS] Checking MD5 sum of file\n")
-    while(check_md5(md5name,out_dir)):
+    while(check_md5(md5,out_dir)):
             logger.error("\n# [BASTA ERROR] MD5 sum mismatch.\n")
             down(ftp,md5,out_dir)
 
