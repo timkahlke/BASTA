@@ -1,7 +1,7 @@
 #########
 #
 #   TaxTree.py - tree structure of given taxon names plus
-#   class functions 
+#   class functions
 #
 ####
 #
@@ -73,11 +73,11 @@ class TTree(object):
                 if tree[b]['count'] in counts:
                     return self.create_majority_lca(tree[b],t + str(b) + ";",min,total)
         else:
-            return t.replace(";;",";")
+            return t.replace("\n", "").replace(";;", ";")
 
 
     # Create LCA:
-    # Return longest string that 
+    # Return longest string that
     # a) is included in all given strings
     # b) includes more hits than given minimum
     def create_lca(self,tree,t,min):
@@ -88,10 +88,10 @@ class TTree(object):
                     continue
                 if tree[b]['count']>=min:
                     return self.create_lca(tree[b],t + str(b) + ";",min)
-        return t.replace(";;",";")
+        return t.replace("\n", "").replace(";;", ";")
 
 
-    # remove species 
+    # remove species
     def _get_known_strings(self,string):
         # Previously removed species to not remove unknowns
         # ts = string.split(";")[:-2]
@@ -99,9 +99,6 @@ class TTree(object):
         #try:
         #    return ts[:ts.index("unknown")]
         #except ValueError:
-        #    return ts 
+        #    return ts
         ts = string.split(";")
         return ts
-
-
-
