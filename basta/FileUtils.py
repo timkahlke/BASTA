@@ -1,5 +1,3 @@
-import os
-import gzip
 import timeit
 
 #########
@@ -30,11 +28,7 @@ import timeit
 #
 
 
-
-
-
-
-def hit_gen(hit_file,alen,evalue,identity,config,num):
+def hit_gen(hit_file, alen, evalue, identity, config, num):
     """Generator function returning hits grouped by sequence"""
     with open(hit_file, "r") as f:
         hits = {}
@@ -45,7 +39,7 @@ def hit_gen(hit_file,alen,evalue,identity,config,num):
                 ls = line.split("\t")
 
                 # next unless good hit
-                if not _check_hit(ls,alen,evalue,identity,config):
+                if not _check_hit(ls, alen, evalue, identity, config):
                     continue
                 nh = ls[config['query_id']]
 
@@ -55,25 +49,23 @@ def hit_gen(hit_file,alen,evalue,identity,config,num):
                     # check non-empty list of hits
                     if hits:
                         yield hits
-                    hit = nh
-                    hits = {hit:[_hit_hash(ls,config)]}
+                        hit = nh
+                        hits = {hit: [_hit_hash(ls, config)]}
                 else:
                     if not hits:
                         hits[hit] = []
                     if num and len(hits[hit]) == num:
                         continue
 
-                    hits[hit].append(_hit_hash(ls,config))  
+                    hits[hit].append(_hit_hash(ls, config))
         except StopIteration:
             if hits:
                 yield hits
             else:
-               return
+                return
 
 
-
-
-def _check_hit(ls,alen,evalue,ident,config):
+def _check_hit(ls, alen, evalue, ident, config):
     try:
         if float(ls[config['pident']]) < ident:
             return 0
@@ -87,9 +79,8 @@ def _check_hit(ls,alen,evalue,ident,config):
         sys.exit()
 
 
-
 def _get_hit_name(hs):
-    # Figure out if the hit is of format 
+    # Figure out if the hit is of format
     # >bla|accession.version|additional-string
     # or
     # >accession.version optional-additional-info
@@ -97,18 +88,24 @@ def _get_hit_name(hs):
     # >gi|gi_number|ref|accession
 
     # DIRTY! Create a better name guessing!!!!
-    ps=hs.split("|")
-    if len(ps)>=3:
+    ps = hs.split("|")
+    if len(ps) >= 3:
         if ps[0] == 'gi':
-            return  [x for x in ps[3].split(".") if x][0]
+            try:
+                return [x for x in ps[3].split(".") if x][0]
+            except IndexError:
+                return("no_match")
         else:
-            return  [x for x in ps[1].split(".") if x][0]
+            try:
+                return [x for x in ps[1].split(".") if x][0]
+            except IndexError:
+                return("no_match")
     else:
-        return  [x for x in hs.replace(">","").split(".") if x][0]
+        try:
+            return [x for x in hs.replace(">", "").split(".") if x][0]
+        except IndexError:
+            return("no_match")
 
 
-
-def _hit_hash(ls,config):
-    return {'id':_get_hit_name(ls[config['subject_id']]),'identity':ls[config['pident']],'evalue':ls[config['evalue']],'alen':ls[config['align_length']]}
-
-
+def _hit_hash(ls, config):
+    return {'id': _get_hit_name(ls[config['subject_id']]), 'identity': ls[config['pident']], 'evalue': ls[config['evalue']], 'alen': ls[config['align_length']]}
