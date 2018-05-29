@@ -29,6 +29,8 @@ conda env create -f environment_linux.yml
 source activate py27
 ```
 
+Now download BASTA and call /bin/basta.
+
 # Quick start
 
 ## Inital Setup
