@@ -41,13 +41,14 @@ from basta import DBUtils as db
 
 class Assigner():
 
-    def __init__(self,evalue,alen,ident,num,minimum,lazy,method,directory,config_path,output):
+    def __init__(self,evalue,alen,ident,num,minimum,lazy,method,directory,config_path,output,hit_count):
         self.evalue = evalue
         self.alen = alen
         self.identity = ident
         self.minimum = minimum
         self.lazy = lazy
         self.num = num
+        self.hit_count=hit_count
         self.logger = logging.getLogger()
         self.method = method
         self.output = output
@@ -119,6 +120,8 @@ class Assigner():
                 fh.write("%s\t%s\t%s\n" % (name,lca,taxa[0]))
             except IndexError:
                 fh.write("%s\t%s\t%s\n" % (name,lca,"Unknown"))
+        elif self.hit_count:
+            fh.write("%s\t%s (%d)\n" % (name,lca,len(taxa)))
         else:
             fh.write("%s\t%s\n" % (name,lca))
 
