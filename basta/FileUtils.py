@@ -49,8 +49,8 @@ def hit_gen(hit_file, alen, evalue, identity, config, num):
                     # check non-empty list of hits
                     if hits:
                         yield hits
-                        hit = nh
-                        hits = {hit: [_hit_hash(ls, config)]}
+                    hit = nh
+                    hits = {hit: [_hit_hash(ls, config)]}
                 else:
                     if not hits:
                         hits[hit] = []
