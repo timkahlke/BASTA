@@ -41,18 +41,17 @@ from basta import DBUtils as db
 
 class Assigner():
 
-    def __init__(self,evalue,alen,ident,num,minimum,lazy,method,directory,config_path,output,hit_count):
+    def __init__(self,evalue,alen,ident,num,minimum,majority_percentage,directory,config_path,output,hit_count):
         self.evalue = evalue
         self.alen = alen
         self.identity = ident
         self.minimum = minimum
-        self.lazy = lazy
         self.num = num
         self.hit_count=hit_count
         self.logger = logging.getLogger()
-        self.method = method
         self.output = output
         self.directory=directory
+        self.majority_percentage = majority_percentage
         self.info_file=""
         if config_path:
             self.config=self._read_config(config_path)
@@ -149,11 +148,8 @@ class Assigner():
     def _getLCS(self,l):
         tree = self._getTT(l)
         minimum = 0;
-        if self.lazy:
-            minimum = min(self.minimum,len(l))
-        else:
-            minimum = self.minimum
-        taxon = tree.lca(minimum,len(l),self.method)
+        minimum = self.minimum
+        taxon = tree.lca(minimum,len(l),self.majority_percentage)
         return taxon
 
 

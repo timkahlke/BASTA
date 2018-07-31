@@ -46,14 +46,10 @@ class TTree(object):
             self._add(tree[i],taxon)
 
 
-    def lca(self,min_count,total,method):
-        if method == 'all':
-            self.taxon = self.create_lca(self.tree,self.taxon,min_count)
-        elif method == 'majority':
-            self.taxon = self.create_majority_lca(self.tree,self.taxon,min_count,total)
-        else:
-            self.logger.error("\n# [ERROR] Unknown method")
-            sys.exit()
+    def lca(self,min_count,total,m_perc):
+        # get at least one more than half
+        m_count = max(int(round(total * (m_perc / 100.0))),int(total/2)+1)
+        self.taxon = self.create_lca(self.tree,self.taxon,min_count,m_count)
         if not self.taxon:
             self.taxon = "Unknown"
         return self.taxon
@@ -61,9 +57,10 @@ class TTree(object):
     # Create majority LCA:
     # Return longest string that
     # a) is included in the majority of hits
+    # b) the majority is >= given percentage of majority
     # b) includes more hits than given minimum
-    def create_majority_lca(self,tree,t,min,total):
-        counts = [tree[x]['count'] for x in tree if x != 'count' and tree[x]['count'] > total/2]
+    def create_lca(self,tree,t,min,m_count):
+        counts = [tree[x]['count'] for x in tree if x != 'count' and tree[x]['count'] >= m_count]
         if counts:
             for b in tree:
                 if b == 'count':
@@ -71,25 +68,9 @@ class TTree(object):
                 if tree[b]['count']<min:
                     continue
                 if tree[b]['count'] in counts:
-                    return self.create_majority_lca(tree[b],t + str(b) + ";",min,total)
+                    return self.create_lca(tree[b],t + str(b) + ";",min,m_count)
         else:
             return t.replace("\n", "").replace(";;", ";")
-
-
-    # Create LCA:
-    # Return longest string that
-    # a) is included in all given strings
-    # b) includes more hits than given minimum
-    def create_lca(self,tree,t,min):
-        k = [x for x in tree if x != 'count']
-        if len(k) <2:
-            for b in tree:
-                if b == "count":
-                    continue
-                if tree[b]['count']>=min:
-                    return self.create_lca(tree[b],t + str(b) + ";",min)
-        return t.replace("\n", "").replace(";;", ";")
-
 
     # remove species
     def _get_known_strings(self,string):

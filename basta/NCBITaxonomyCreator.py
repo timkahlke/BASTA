@@ -140,7 +140,7 @@ class Creator():
         return corrections
 
 
-    # build tree from nnodes
+    # build tree from nodes
     def _build(self,nodes):
         parents = {}
         corrections = self._read_corrections()
