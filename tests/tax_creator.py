@@ -39,7 +39,12 @@ class TestDB(unittest.TestCase):
 
         self.nodes = os.path.join(self.pwd,"nodes.tab") 
         self.names = os.path.join(self.pwd,"names.tab") 
- 
+
+
+    def tearDown(self):
+        os.remove(os.path.join(self.pwd,"names.tab"))
+        os.remove(os.path.join(self.pwd,"nodes.tab"))
+
 
     def test_creator(self):
         creator = NCBITaxonomyCreator.Creator(self.names,self.nodes)
