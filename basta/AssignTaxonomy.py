@@ -4,8 +4,6 @@ import sys
 import os
 import logging
 
-# Quick'n'Dirty! Change!
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from basta import FileUtils as futils
 from basta import TaxTree as ttree
 from basta import DBUtils as db

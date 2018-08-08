@@ -7,8 +7,6 @@ import plyvel
 import argparse
 from subprocess import call
 
-# Quick'n'Dirty! Change!
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from basta import FileUtils as futils
 from basta import TaxTree as ttree
 from basta import AssignTaxonomy
