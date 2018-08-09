@@ -11,25 +11,17 @@ Release v1.2 can be cited as "Kahlke, T. (2018, January 9). Basta 1.2 - Basic Se
 
 # Requirements
 
-BASTA dependencies and requirements can be installed using the [conda](https://conda.io/docs/) environment manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
+BASTA and its dependencies can be completely installed using the [conda](https://conda.io/docs/) environment manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
 
-Once you have conda [installed](https://conda.io/miniconda.html), do the following:
-
-**On OSX/mac**:
+Installation using conda:
 
 ```
-conda env create -f environment_osx.yml
-source activate py27
+conda install -c bioconda -c bnoon -c timkahlke basta
 ```
+The above command will install the required dependencies leveldb and wget as well as the required python libraries.
 
-**On Linux**:
+BASTA installation has been tested for MacOSX 10.11 and Ubuntu 14.01 and 16.01 using miniconda 2.
 
-```
-conda env create -f environment_linux.yml
-source activate py27
-```
-
-Now download BASTA and call /bin/basta.
 
 # Quick start
 
@@ -59,17 +51,13 @@ Now download BASTA and call /bin/basta.
 ```
 
 # Last Common Ancestor algorithm
-BASTA supports two algorithms: all and majority
+BASTA supports taxonomic estimation based on a percentage of best hits using the -p flag.
 
-## All
-If this method is used BASTA reads a given number of best hits for each query sequence and returns the LCA of all sequences (unknown taxonomic levels in database hits are ignored).
+## 100% = all
+If set to 100% (default) BASTA reads a given number of best hits for each query sequence and returns the LCA of all sequences.
 
-Additionally, if the *lazy* option is used, the user defined minimum number *n* of hits that is needed to estimate taxonomies will be discarded for sequences with a total hit number <n. Set values for e-value, identity, alignment length etc still apply.
-
-
-## Majority
-In this case BASTA determines the LCA based on the LCA of the majority of given best hits. Example: if maximum best hit number is set to 5 and 3 best hits are Bacteria and 2 best hits are Archaea, BASTA returns Bacteria as LCA.
-
+## 51 - 99% = majority classification
+If set to a value between 51 and 99 BASTA returns the taxonomy that is shared by at least the given percentage of hits. This gives the user the potential to build a majority taxonomy instead of including all best hits in the BASTA result.
 
 
 # Additional scripts
