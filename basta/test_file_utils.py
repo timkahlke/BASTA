@@ -2,8 +2,6 @@ import unittest
 import os
 import sys
 
-# Quick'n'Dirty! Change!
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from basta import FileUtils as fu
 
 class TestFile(unittest.TestCase):

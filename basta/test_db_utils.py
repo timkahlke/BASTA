@@ -2,8 +2,6 @@ import unittest
 import os
 import sys
 
-# Quick'n'Dirty! Change!
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from basta import DBUtils as db
 
 class TestDB(unittest.TestCase):
