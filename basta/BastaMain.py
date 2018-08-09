@@ -60,6 +60,7 @@ class Main():
 
 
     def run_basta(self,args):
+        self._check_dir(args)
         if args.subparser_name == 'sequence':
             if not dbutils._check_complete(args.directory):
                 self.logger.error("\n[BASTA ERROR] Couldn't find complete_taxa.db in %s. Did you run initial \'basta download\'?" % (args.directory))
