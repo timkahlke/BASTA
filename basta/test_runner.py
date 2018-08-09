@@ -1,10 +1,10 @@
 import unittest
 
-from basta import db_utils
-from basta import tax_creator
-from basta import tax_tree
-from basta import file_utils
-from basta import download_utils
+from basta import test_db_utils
+from basta import test_tax_creator
+from basta import test_tax_tree
+from basta import test_file_utils
+from basta import test_download_utils
 
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
