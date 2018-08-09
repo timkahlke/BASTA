@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='BASTA',
-      version="1.3.1a",
+      version="1.3.2",
       description="BAsic Sequence Taxonomy Annotation using a last common ancestor algorithm",
       url="https://github.com/timkahlke/BASTA",
       author="Tim Kahlke",

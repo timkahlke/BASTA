@@ -60,27 +60,32 @@ class Main():
 
 
     def run_basta(self,args):
-        self._check_dir(args)
         if args.subparser_name == 'sequence':
+            self._check_dir(args)
             if not dbutils._check_complete(args.directory):
                 self.logger.error("\n[BASTA ERROR] Couldn't find complete_taxa.db in %s. Did you run initial \'basta download\'?" % (args.directory))
                 sys.exit()
             self._basta_sequence(args)
         elif args.subparser_name == 'single':
+            self._check_dir(args)
             if not dbutils._check_complete(args.directory):
                 self.logger.error("\n[BASTA ERROR] Couldn't find complete_taxa.db in %s. Did you run initial \'basta download\'?" % (args.directory))
                 sys.exit()
             self._basta_single(args)
         elif args.subparser_name == 'multiple':
+            self._check_dir(args)
             if not dbutils._check_complete(args.directory):
                 self.logger.error("\n[BASTA ERROR] Couldn't find complete_taxa.db in %s. Did you run initial \'basta download\'?" % (args.directory))
                 sys.exit()
             self._basta_multiple(args)
         elif args.subparser_name == 'download':
+            self._check_dir(args)
             self._basta_download(args)
         elif args.subparser_name == 'create_db':
+            self._check_dir(args)
             self._basta_create_db(args)
         elif args.subparser_name == 'taxonomy':
+            self._check_dir(args)
             self._basta_taxonomy(args)
 
 
@@ -168,19 +173,19 @@ class Main():
 
 
     def _basta_taxonomy(self,args):
-        if not os.path.exists(args.output):
-            os.makedirs(args.output)
+        if not os.path.exists(args.directory):
+            os.makedirs(args.directory)
         self.logger.info("\n#### Downloading and processing NCBI taxonomy files\n")
         self.logger.info("\n# [BASTA STATUS] Download taxonomy files")
-        dutils.down_and_check("ftp://ftp.ncbi.nih.gov/pub/taxonomy/","taxdump.tar.gz",args.output)
-        call(["tar", "-xzvf", os.path.join(args.output,"taxdump.tar.gz"), "-C", args.output])
+        dutils.down_and_check("ftp://ftp.ncbi.nih.gov/pub/taxonomy/","taxdump.tar.gz",args.directory)
+        call(["tar", "-xzvf", os.path.join(args.directory,"taxdump.tar.gz"), "-C", args.directory])
 
         self.logger.info("\n# [BASTA STATUS] Creating complete taxonomy file\n")
-        tax_creator = ntc.Creator(os.path.join(args.output,"names.dmp"),os.path.join(args.output,"nodes.dmp"))
-        tax_creator._write(os.path.join(args.output,"complete_taxa"))
+        tax_creator = ntc.Creator(os.path.join(args.directory,"names.dmp"),os.path.join(args.directory,"nodes.dmp"))
+        tax_creator._write(os.path.join(args.directory,"complete_taxa"))
 
         self.logger.info("\n# [BASTA STATUS] Creating taxonomy database")
-        dbutils.create_db(args.output,"complete_taxa.gz","complete_taxa.db",0,1)
+        dbutils.create_db(args.directory,"complete_taxa.gz","complete_taxa.db",0,1)
 
-        self.logger.info("\n### Done! NCBI taxonomy database created in %s ####" % (args.output))
+        self.logger.info("\n### Done! NCBI taxonomy database created in %s ####" % (args.directory))
 
