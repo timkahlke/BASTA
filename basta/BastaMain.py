@@ -6,6 +6,7 @@ import logging
 import plyvel
 import argparse
 from subprocess import call
+from os.path import expanduser
 
 from basta import FileUtils as futils
 from basta import TaxTree as ttree
@@ -47,7 +48,16 @@ class Main():
     def __init__(self):
         logging.basicConfig(format='',level=logging.INFO)
         self.logger = logging.getLogger()
-        
+       
+
+    def _check_dir(self,args):
+        if(args.directory == "home"):
+            basta_home = os.path.join(expanduser("~"),".basta");
+            args.directory = os.path.join(basta_home,"taxonomy")
+            if not os.path.isdir(basta_home):
+                os.mkdir(basta_home)
+                os.mkdir(args.directory)
+
 
     def run_basta(self,args):
         if args.subparser_name == 'sequence':

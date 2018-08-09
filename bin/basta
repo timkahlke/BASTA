@@ -49,7 +49,7 @@ if __name__=="__main__":
     an_seq_parser.add_argument("-n", "--number", help="maximum number of hits to use for classification. If set to 0 all hits will be considered (default=0)", type=int, default=0)
     an_seq_parser.add_argument("-m", "--minimum", help="Minimum number of hits a sequence must have to be assigned an LCA. Used for all and majority LCA estimation (default=3)", type=int, default=3)
     an_seq_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
-    an_seq_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
+    an_seq_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default="home")
     an_seq_parser.add_argument("-c", "--config_path", help="Configuration file for non-default output files (see documentation)", default=0)
     an_seq_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
     an_seq_parser.add_argument("-p", "--maj_perc", help="Percentage of hits that are used for LCA estimation. Must be between 51-100 (default: 100)", type=int, default=100, choices=range(51,100))
@@ -68,7 +68,7 @@ if __name__=="__main__":
     an_single_parser.add_argument("-n", "--number", help="maximum number of hits to use for classification. If set to 0 all hits will be considered (default=0)", type=int, default=0)
     an_single_parser.add_argument("-m", "--minimum", help="Minimum number of hits a sequence must have to be assigned an LCA. Used for all and majority LCA estimation (default=3)", type=int, default=3)
     an_single_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
-    an_single_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
+    an_single_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default="home")
     an_single_parser.add_argument("-c", "--config_path", help="Configuration file for non-default output files (see documentation)", default=0)
     an_single_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
     an_single_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
@@ -85,7 +85,7 @@ if __name__=="__main__":
     an_dir_parser.add_argument("-n", "--number", help="maximum number of hits to use for classification. If set to 0 all hits will be considered (default=0)", type=int, default=0)
     an_dir_parser.add_argument("-m", "--minimum", help="Minimum number of hits a sequence must have to be assigned an LCA. Used for all and majority LCA estimation (default=3)", type=int, default=3)
     an_dir_parser.add_argument("-i", "--identity", help="minimum identity of hit to be considered good (default = 80)", type=float, default=80)
-    an_dir_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
+    an_dir_parser.add_argument("-d", "--directory", help="directory of database files (default: BASTA_ROOT/taxonomy)", default="home")
     an_dir_parser.add_argument("-c", "--config_path", help="Configuration file for non-default output files (see documentation)", default=0)
     an_dir_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
     an_dir_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
@@ -95,7 +95,7 @@ if __name__=="__main__":
     # download NCBI mappings
     download_parser = subparsers.add_parser('download', description='Download NCBI taxonomy file(s)')
     download_parser.add_argument("type", help="Type of mapping file to be downloaded (prot, est, wgs, gss or gb)", choices=['wgs','prot','est','gss','gb','pdb','uni'])
-    download_parser.add_argument("-d","--directory", help="Directory of mapping files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
+    download_parser.add_argument("-d","--directory", help="Directory of mapping files (default: BASTA_ROOT/taxonomy)", default="home")
     download_parser.add_argument("-f", "--ftp", help="URL to NCBI ftp for accession mapping (default: ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/)", default="ftp://ftp.ncbi.nih.gov/pub/taxonomy/accession2taxid/")
 
 
@@ -105,12 +105,12 @@ if __name__=="__main__":
     create_db_parser.add_argument("output", help="name of the output database file")
     create_db_parser.add_argument("key", help="index of column that should be used as key", type=int)
     create_db_parser.add_argument("value", help="index of column that should be used as value", type=int)
-    create_db_parser.add_argument("-d","--directory", help="Directory of database files (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
+    create_db_parser.add_argument("-d","--directory", help="Directory of database files (default: BASTA_ROOT/taxonomy)", default="home")
     create_db_parser.add_argument("-r","--remove", help="if true original input file will be removed", type=bool, default=False)
     
     # create NCBI taxonomy
     taxonomy_parser = subparsers.add_parser('taxonomy', description='Download and create a complete NCBI taxonomy')
-    taxonomy_parser.add_argument("-o", "--output", help="output directory (default: BASTA_ROOT/taxonomy)", default=os.path.abspath(os.path.join(os.path.dirname(__file__),"../taxonomy")))
+    taxonomy_parser.add_argument("-o", "--output", help="output directory (default: BASTA_ROOT/taxonomy)", default="home")
 
     args = parser.parse_args()
 
