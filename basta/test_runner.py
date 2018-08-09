@@ -1,10 +1,14 @@
 import unittest
+import sys
+import os
+import plyvel
 
-from basta import test_db_utils
-from basta import test_tax_creator
-from basta import test_tax_tree
-from basta import test_file_utils
-from basta import test_download_utils
+
+import test_db_utils
+import test_tax_creator
+import test_tax_tree
+import test_file_utils
+import test_download_utils
 
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
