@@ -4,7 +4,7 @@ from basta import db_utils
 from basta import tax_creator
 from basta import tax_tree
 from basta import file_utils
-from bastaimport download_utils
+from basta import download_utils
 
 loader = unittest.TestLoader()
 suite = unittest.TestSuite()
