@@ -11,7 +11,7 @@ Release v1.2 can be cited as "Kahlke, T. (2018, January 9). Basta 1.2 - Basic Se
 
 # Requirements
 
-BASTA and its dependencies can be completely installed using the [conda](https://conda.io/docs/) environment manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
+BASTA and its dependencies can be completely installed using the [conda](https://conda.io/docs/) package manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
 
 Installation using conda:
 
@@ -20,7 +20,7 @@ conda install -c bioconda -c bnoon -c timkahlke basta
 ```
 The above command will install the required dependencies leveldb and wget as well as the required python libraries.
 
-BASTA installation has been tested for MacOSX 10.11 and Ubuntu 14.01 and 16.01 using miniconda 2.
+BASTA installation has been tested for MacOSX 10.11 and Ubuntu 14.01 and 16.01 using miniconda2.
 
 
 # Quick start
@@ -36,6 +36,9 @@ BASTA installation has been tested for MacOSX 10.11 and Ubuntu 14.01 and 16.01 u
 ./bin/basta download gb
 ./bin/basta download prot
 ```
+
+## Conda default data directory
+Per default the taxonomy data as well as mapping databasese are stored in $HOME/.basta.
 
 ## Running BASTA
 
