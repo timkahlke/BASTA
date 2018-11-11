@@ -31,12 +31,12 @@ BASTA installation has been tested for MacOSX 10.11 and Ubuntu 14.01 and 16.01 u
 
 ```
 # set up NCBI taxonomy database
-./bin/basta taxonomy
+basta taxonomy
 
 # download and set up genbank and uniprot mappings
 # NOTE: this might not be needed for you. See Wiki for details
-./bin/basta download gb
-./bin/basta download prot
+basta download gb
+basta download prot
 ```
 
 ## Conda default data directory
@@ -46,13 +46,13 @@ Per default the taxonomy data as well as mapping databasese are stored in $HOME/
 
 ```
 # Infer one LCA for each query sequence of blast against uniprot
-./bin/basta sequence BLAST_OUTPUT_FILE BASTA_OUTPUT_FILE prot
+basta sequence BLAST_OUTPUT_FILE BASTA_OUTPUT_FILE prot
 
 # Infer one LCA for the complete blast output file
-./bin/basta single BLAST_OUTPUT_FILE prot
+basta single BLAST_OUTPUT_FILE prot
 
 # Infer one LCA for each blast output file in a given directory
-./bin/basta multiple BLAST_OUTPUT_DIRECTORY BASTA_OUTPUT_FILE prot
+basta multiple BLAST_OUTPUT_DIRECTORY BASTA_OUTPUT_FILE prot
 ```
 
 # Last Common Ancestor algorithm
@@ -72,7 +72,7 @@ If set to a value between 51 and 99 BASTA returns the taxonomy that is shared by
 This creates a krona plot (html file) that can be opened in your browser from a basta annotation output file.
 
 ```
-./scripts/basta2krona BASTA_OUTPUT_FILE KRONA_HTML_FILE
+basta2krona BASTA_OUTPUT_FILE KRONA_HTML_FILE
 ```
 
 
@@ -81,5 +81,5 @@ This creates a krona plot (html file) that can be opened in your browser from a 
 This script can be used to filter a given fasta file based on BASTA annotations.
 
 ```
-./scripts/filter_fasta.py [options] FASTA_FILE FILTERED_OUTPUT_FILE NAME_OF_TAXON BASTA_FILE
+filter_fasta.py [options] FASTA_FILE FILTERED_OUTPUT_FILE NAME_OF_TAXON BASTA_FILE
 ```
