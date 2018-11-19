@@ -76,10 +76,10 @@ basta2krona BASTA_OUTPUT_FILE KRONA_HTML_FILE
 ```
 
 
-## filter_fasta.py
+## filter_basta_fasta.py
 
 This script can be used to filter a given fasta file based on BASTA annotations.
 
 ```
-filter_fasta.py [options] FASTA_FILE FILTERED_OUTPUT_FILE NAME_OF_TAXON BASTA_FILE
+filter_basta_fasta.py [options] FASTA_FILE FILTERED_OUTPUT_FILE NAME_OF_TAXON BASTA_FILE
 ```
