@@ -42,7 +42,7 @@ class Creator():
 
     # Start writing output zip file
     def _write(self,out):
-        oh = gzip.open(out + ".gz","w")
+        oh = gzip.open(out + ".gz","wt")
         self._walk(oh,self.tree["1"],"","1")
         oh.close()
 
@@ -108,7 +108,7 @@ class Creator():
         y = self.ranks.index(rank)
 
         if x<y:
-            for z in xrange(x,y):
+            for z in range(x,y):
                 string+="unknown;"
         elif x>y:
             # needed for screw up in NCBI for multiple same level taxa assignments
@@ -120,7 +120,7 @@ class Creator():
     # taxon level is reached
     def _fill_taxon_post_rank(self,rank,string):
         y = self.ranks.index(rank)
-        for z in xrange(y+1,len(self.ranks)):
+        for z in range(y+1,len(self.ranks)):
             string+="unknown;"    
         return string
 
