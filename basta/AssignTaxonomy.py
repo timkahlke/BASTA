@@ -39,7 +39,7 @@ from basta import DBUtils as db
 
 class Assigner():
 
-    def __init__(self,evalue,alen,ident,num,minimum,majority_percentage,directory,config_path,output,hit_count):
+    def __init__(self,evalue,alen,ident,num,minimum,majority_percentage,directory,config_path,output,hit_count,quiet):
         self.evalue = evalue
         self.alen = alen
         self.identity = ident
@@ -50,6 +50,7 @@ class Assigner():
         self.output = output
         self.directory=directory
         self.majority_percentage = majority_percentage
+        self.quiet = quiet
         self.info_file=""
         if config_path:
             self.config=self._read_config(config_path)
@@ -72,6 +73,8 @@ class Assigner():
                     self._print_info(taxa,seq)
                 self._print(out_fh,seq,lca,best,taxa)
         out_fh.close()
+        tax_lookup.close()
+        map_lookup.close()
 
 
     def _assign_single(self,blast,db_file,best):
@@ -87,27 +90,27 @@ class Assigner():
         if self.info_file:
             self._print_info(taxa,"Sequence")
         self._print(out_fh,"Sequence",lca,best,taxa)
+        tax_lookup.close()
+        map_lookup.close()
         return lca
 
 
     def _assign_multiple(self,blast_dir,db_file,best):
-        self.logger.info("\n# [BASTA STATUS] Assigning taxonomies ...")
-        (tax_lookup, map_lookup) = self._get_lookups(db_file)
         out_fh = open(self.output,"w")
         out_fh.write("#File\tLCA\n")
         nofo_map = []
         for bf in os.listdir(blast_dir):
             self.logger.info("\n# [BASTA STATUS] - Estimating Last Common Ancestor for file  %s" % (str(bf)))
-            lca = self._assign_single(os.path.join(blast_dir,bf),db_file)
+            lca = lca = self._assign_single(os.path.join(blast_dir,bf),db_file,best)
             out_fh.write("%s\t%s\n" %(bf,lca))
         out_fh.close() 
 
 
     def _get_lookups(self,db_file):
         self.logger.info("\n# [BASTA STATUS] Initializing taxonomy database")
-        tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
+        tax_lookup = db._init_snapshot(os.path.join(self.directory,"complete_taxa.db"))
         self.logger.info("\n# [BASTA STATUS] Initializing mapping database")
-        map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
+        map_lookup = db._init_snapshot(os.path.abspath(os.path.join(self.directory,db_file)))
         return (tax_lookup, map_lookup)
 
 
@@ -160,16 +163,18 @@ class Assigner():
 
     def _get_tax_list(self,hits,map_lookup,tax_lookup,taxa,nofo_map):
         for hit in hits:
-            taxon_id = map_lookup.get(hit['id'])
+            taxon_id = map_lookup.get(bytes(hit['id'], 'utf-8'))
             if not taxon_id:
                 if not hit['id'] in nofo_map:
-                    self.logger.warning("\n# [BASTA WARNING] No mapping found for %s" % (hit['id']))
+                    if not self.quite:
+                        self.logger.warning("\n# [BASTA WARNING] No mapping found for %s" % (hit['id']))
                     nofo_map.append(hit['id'])
                 continue
-            tax_string = tax_lookup.get(taxon_id.strip("\n"))
+            tax_string = tax_lookup.get(bytes(taxon_id.strip("\n"), 'utf-8'))
             if not tax_string:
                 if not taxon_id in nofo_map:
-                    self.logger.warning("\n# [BASTA WARNING] No taxon found for %d" % (int(taxon_id)))
+                    if not self.quiet:
+                        self.logger.warning("\n# [BASTA WARNING] No taxon found for %d" % (int(taxon_id)))
                     nofo_map.append(taxon_id)
                     continue
                 else:
