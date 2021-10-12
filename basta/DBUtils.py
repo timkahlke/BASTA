@@ -64,7 +64,8 @@ def create_db(path,f,of,i1,i2):
                     logger.info("\n# [BASTA STATUS] %d lines processed (avg time: %fsec)" % (count,timetotal/num))
                     start_time = timeit.default_timer()
                 ls = line.strip("\n").split("\t")
-                lookup.put(ls[i1],ls[i2])
+                print(ls)
+                lookup.put(bytes(ls[i1], 'utf-8'),bytes(ls[i2], 'utf-8'))
             lookup.close()
     except IOError:
         logger.error("\n# [BASTA ERROR] No file %s: did you forget to download mapping file (parameter -d True)?" % (ip))
@@ -72,8 +73,18 @@ def create_db(path,f,of,i1,i2):
 
 
 def _init_db(db):
-        lookup = plyvel.DB(os.path.abspath(db))
-        return lookup
+    lookup = plyvel.DB(os.path.abspath(db))
+    return lookup
+
+
+def _init_snapshot(db):
+    snap = plyvel.DB(os.path.abspath(db)).snapshot()
+    return snap
+
+
+def _release_snapshot(snap):
+    snap.close()
+
 
 def _check_file_name(name):
     if not name.endswith(".db"):
