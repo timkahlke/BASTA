@@ -77,14 +77,6 @@ def _init_db(db):
     return lookup
 
 
-def _init_snapshot(db):
-    snap = plyvel.DB(os.path.abspath(db)).snapshot()
-    return snap
-
-
-def _release_snapshot(snap):
-    snap.close()
-
 
 def _check_file_name(name):
     if not name.endswith(".db"):
