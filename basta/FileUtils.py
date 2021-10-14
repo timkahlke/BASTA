@@ -37,6 +37,8 @@ def hit_gen(hit_file, alen, evalue, identity, config, num):
         try:
             while True:
                 line = f.readline()
+                if not line:
+                    continue
                 ls = line.split("\t")
 
                 # next unless good hit
