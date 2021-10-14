@@ -169,7 +169,7 @@ class Assigner():
                 taxon_id = ""
             if not taxon_id:
                 if not hit['id'] in nofo_map:
-                    if not self.quite:
+                    if not self.quiet:
                         self.logger.warning("\n# [BASTA WARNING] No mapping found for %s" % (hit['id']))
                     nofo_map.append(hit['id'])
                 continue
