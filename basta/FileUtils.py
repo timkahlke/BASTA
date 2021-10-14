@@ -76,7 +76,7 @@ def _check_hit(ls, alen, evalue, ident, config):
             return 0
         return 1
     except IndexError:
-        print("\n#### [BASTA ERROR] ####\n#\n# INDEX ERROR WHILE CHECKING e-value, alingment length OR percent  identity!!!.\n# Are you sure that your input file has the correct format?\n# (For details check https://github.com/timkahlke/BASTA/wiki/3.-BASTA-Usage#input-file-format)\n#\n#####\n\n")
+        print("\n#### [BASTA ERROR] ####\n#\n# INDEX ERROR WHILE CHECKING e-value, alignment length OR percent  identity!!!.\n# Are you sure that your input file has the correct format?\n# (For details check https://github.com/timkahlke/BASTA/wiki/3.-BASTA-Usage#input-file-format)\n#\n#####\n\n")
         sys.exit()
 
 
