@@ -108,9 +108,9 @@ class Assigner():
 
     def _get_lookups(self,db_file):
         self.logger.info("\n# [BASTA STATUS] Initializing taxonomy database")
-        tax_lookup = db._init_snapshot(os.path.join(self.directory,"complete_taxa.db"))
+        tax_lookup = db._init_db(os.path.join(self.directory,"complete_taxa.db"))
         self.logger.info("\n# [BASTA STATUS] Initializing mapping database")
-        map_lookup = db._init_snapshot(os.path.abspath(os.path.join(self.directory,db_file)))
+        map_lookup = db._init_db(os.path.abspath(os.path.join(self.directory,db_file)))
         return (tax_lookup, map_lookup)
 
 
