@@ -54,7 +54,7 @@ if __name__=="__main__":
 
     an_seq_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
     an_seq_parser.add_argument("-x", "--hit_count", help="If set to True the final taxonomy will include the hit count in brackets", type=bool, default=False)
-    an_seq_parser.add_argument("-q", "--quite", help="If set to True no warnings about non-found hits are printed to STDOUT", type=bool, default=False)
+    an_seq_parser.add_argument("-q", "--quiet", help="If set to True no warnings about non-found hits are printed to STDOUT", type=bool, default=False)
 
     # annotate all sequences in fasta file
     an_single_parser = subparsers.add_parser('single', description='Estimate one single taxonomy based on all query sequences')
@@ -72,7 +72,7 @@ if __name__=="__main__":
     an_single_parser.add_argument("-b", "--best_hit", help="If set the final taxonomy will contain an additional column containing the taxonomy of the best (first) hit with defined taxonomy", type=bool, default=False)
     an_single_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
     an_single_parser.add_argument("-p", "--maj_perc", help="Percentage of hits that are used for LCA estimation. Must be between 51-100 (default: 100)", type=int, default=100, choices=range(51,100))
-    an_single_parser.add_argument("-q", "--quite", help="If set to True no warnings about non-found hits are printed to STDOUT", type=bool, default=False)
+    an_single_parser.add_argument("-q", "--quiet", help="If set to True no warnings about non-found hits are printed to STDOUT", type=bool, default=False)
 
 
     # batch sequence annotation
@@ -91,7 +91,7 @@ if __name__=="__main__":
     an_dir_parser.add_argument("-v", "--verbose", help="File name for detailed taxonomy of hits for each sequence")
     an_dir_parser.add_argument("-x", "--hit_count", help="If set to True the final taxonomy will include the hit count in brackets", type=bool, default=False)
     an_dir_parser.add_argument("-p", "--maj_perc", help="Percentage of hits that are used for LCA estimation. Must be between 51-100 (default: 100)", type=int, default=100, choices=range(5,100))
-    an_dir_parser.add_argument("-q", "--quite", help="If set to True no warnings about non-found hits are printed to STDOUT", type=bool, default=False)
+    an_dir_parser.add_argument("-q", "--quiet", help="If set to True no warnings about non-found hits are printed to STDOUT", type=bool, default=False)
     # download NCBI mappings
     download_parser = subparsers.add_parser('download', description='Download NCBI taxonomy file(s)')
     download_parser.add_argument("type", help="Type of mapping file to be downloaded (prot, est, wgs, gss or gb)", choices=['wgs','prot','est','gss','gb','pdb','uni'])
