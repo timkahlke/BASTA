@@ -163,14 +163,20 @@ class Assigner():
 
     def _get_tax_list(self,hits,map_lookup,tax_lookup,taxa,nofo_map):
         for hit in hits:
-            taxon_id = str(map_lookup.get(bytes(hit['id'], 'utf-8')))
+            try:
+                taxon_id = (map_lookup.get(bytes(hit['id'], 'utf-8'))).decode('utf-8')
+            except AttributeError:
+                taxon_id = ""
             if not taxon_id:
                 if not hit['id'] in nofo_map:
                     if not self.quite:
                         self.logger.warning("\n# [BASTA WARNING] No mapping found for %s" % (hit['id']))
                     nofo_map.append(hit['id'])
                 continue
-            tax_string = str(tax_lookup.get(bytes(taxon_id.strip("\n"), 'utf-8')))
+            try:
+                tax_string = (tax_lookup.get(bytes(taxon_id.strip("\n"), 'utf-8'))).decode('utf-8')
+            except AttributeError:
+                tax_string = ""
             if not tax_string:
                 if not taxon_id in nofo_map:
                     if not self.quiet:
