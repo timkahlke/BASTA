@@ -60,6 +60,7 @@ def hit_gen(hit_file, alen, evalue, identity, config, num):
                         continue
 
                     hits[hit].append(_hit_hash(ls, config))
+            raise StopIteration
         except StopIteration:
             if hits:
                 yield hits
