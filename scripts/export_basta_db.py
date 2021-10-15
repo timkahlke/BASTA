@@ -73,7 +73,7 @@ def _fetch_taxonomies(args,logger):
 
     with open(args.dbout,"w") as f:
         for k,v in map_lookup:
-            tax_string = tax_lookup.get(v)
+            tax_string = (tax_lookup.get(bytes(v, 'utf-8'))).decode('utf-8')
             if not tax_string:
                 if v in not_found:
                     continue
