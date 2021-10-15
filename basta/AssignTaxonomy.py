@@ -63,7 +63,6 @@ class Assigner():
         (tax_lookup, map_lookup) = self._get_lookups(db_file)
         nofo_map = []
         out_fh = open(self.output,"w")
-        print(self.info_file)
         for seq_hits in futils.hit_gen(blast,self.alen,self.evalue,self.identity,self.config,self.num):
             for seq in seq_hits:
                 taxa = []
@@ -73,8 +72,6 @@ class Assigner():
                     self._print_info(taxa,seq)
                 self._print(out_fh,seq,lca,best,taxa)
         out_fh.close()
-        tax_lookup.close()
-        map_lookup.close()
 
 
     def _assign_single(self,blast,db_file,best):
@@ -90,8 +87,6 @@ class Assigner():
         if self.info_file:
             self._print_info(taxa,"Sequence")
         self._print(out_fh,"Sequence",lca,best,taxa)
-        tax_lookup.close()
-        map_lookup.close()
         return lca
 
 
