@@ -94,6 +94,8 @@ class Main():
         db_file = dbutils.get_db_name(args.directory,args.type)
         assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.maj_perc,args.directory,args.config_path,args.output,args.hit_count,args.quiet)
         if args.verbose:
+            if os.path.exists(args.verbose):
+                os.remove(args.verbose)
             assigner.info_file = args.verbose
         assigner._assign_sequence(args.blast,db_file,args.best_hit)
         self.logger.info("\n#### Done. Output written to %s" % (args.output))
@@ -104,6 +106,8 @@ class Main():
         db_file = dbutils.get_db_name(args.directory,args.type)
         assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.maj_perc,args.directory,args.config_path,args.output,args.hit_count,args.quiet) 
         if args.verbose:
+            if os.path.exists(args.verbose):
+                os.remove(args.verbose)
             assigner.info_file = args.verbose
         lca = assigner._assign_single(args.blast,db_file,args.best_hit)
         self.logger.info("\n##### Results #####\n")
@@ -117,6 +121,8 @@ class Main():
         db_file = dbutils.get_db_name(args.directory,args.type)
         assigner = AssignTaxonomy.Assigner(args.evalue,args.alen,args.identity,args.number,args.minimum,args.maj_perc,args.directory,args.config_path,args.output,args.hit_count,args.quiet)
         if args.verbose:
+            if os.path.exists(args.verbose):
+                os.remove(args.verbose)
             assigner.info_file = args.verbose
         assigner._assign_multiple(args.blast,db_file,args.best_hit)
         self.logger.info("\n###### Done. Output written to %s" % (args.output))
