@@ -53,8 +53,8 @@ def _writeKrona(counts,of):
     fn_str = " ".join(paths)
     cmd = "ktImportText -o %s %s" % (of,fn_str)
     subprocess.check_call(cmd,shell=True)
-    for p in paths:
-        os.remove(p.split(",")[0]) 
+    #for p in paths:
+        #os.remove(p.split(",")[0]) 
 
 
 
@@ -63,7 +63,7 @@ def _parseBASTA(bf):
     counts = {}
     with open(bf,"r") as f:
         for line in f:
-            ls = filter(None,line.split("\t"))
+            ls = line.split("\t")
             try:
                 counts[ls[1]] += 1 
             except KeyError:
