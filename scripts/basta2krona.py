@@ -53,8 +53,8 @@ def _writeKrona(counts,of):
     fn_str = " ".join(paths)
     cmd = "ktImportText -o %s %s" % (of,fn_str)
     subprocess.check_call(cmd,shell=True)
-    #for p in paths:
-        #os.remove(p.split(",")[0]) 
+    for p in paths:
+        os.remove(p.split(",")[0]) 
 
 
 
