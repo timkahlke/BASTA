@@ -13,9 +13,41 @@ If you like BASTA and use it for publications please cite it as "Kahlke T and Ra
 
 # Requirements
 
-BASTA and its dependencies can be completely installed using the [conda](https://conda.io/docs/) package manager. For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
+BASTA >= v1.4 is written in python3 and requires the following dependencies:
 
-Installation using conda:
+* leveldb
+* plyvel
+* wget
+* krona
+
+
+# Installation
+
+## Installing BASTA v1.4 in conda environment (Recommended)
+
+It's recommended to install python in a conda environment as follows:
+
+```
+# Create a conda ennvironment called basta_py3
+conda create -n basta_py3 python=3
+
+# Activate the conda environment
+conda activate basta_py3
+
+# Download and install dependencies
+conda install -c bioconda -c conda-forge leveldb plyvel krona wget
+
+# Clone the github directory
+git clone https://github.com/timkahlke/BASTA.git
+cd BASTA
+python setup.py install
+```
+
+For installation without conda see installation instructions on the wiki (https://github.com/timkahlke/BASTA/wiki).
+
+## Installing legacy versions (python2)
+
+Old python2 versions can be installed completely using conda:
 
 ```
 conda install -c bioconda -c bnoon -c timkahlke basta
