@@ -64,7 +64,7 @@ def _get_seqs(bf,l,n):
 
     with open(bf,"r") as f:
         for line in f:
-            ls = filter(None,line.split("\t"))
+            ls = line.split("\t")
             if l:
                 try:
                     if ls[1].split(";")[levels.index(l)] == n:
