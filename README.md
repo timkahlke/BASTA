@@ -17,7 +17,7 @@ BASTA >= v1.4 is written in python3 and requires the following dependencies:
 
 * leveldb
 * plyvel
-* wget
+* python-wget
 * krona
 
 
@@ -35,7 +35,7 @@ conda create -n basta_py3 python=3
 conda activate basta_py3
 
 # Download and install dependencies
-conda install -c bioconda -c conda-forge leveldb plyvel krona wget
+conda install -c bioconda -c conda-forge leveldb plyvel krona python-wget
 
 # Clone the github directory
 git clone https://github.com/timkahlke/BASTA.git
