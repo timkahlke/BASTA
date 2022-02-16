@@ -4,7 +4,7 @@ import os
 import sys
 import hashlib
 import logging
-
+import subprocess
 
 ############
 #
@@ -34,7 +34,7 @@ import logging
 
 # Download files using wget
 def wget_file(path,f,outdir):
-    os.system("wget -O %s/%s %s/%s" % (outdir,f,path,f))
+    subprocess.run(["wget", "-O", os.path.join(outdir, f), os.path.join(path, f)])
 
 
 # Check MD5 sum of givenfile
