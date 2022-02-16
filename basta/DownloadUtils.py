@@ -4,7 +4,8 @@ import os
 import sys
 import hashlib
 import logging
-import subprocess
+import wget
+
 
 ############
 #
@@ -34,7 +35,7 @@ import subprocess
 
 # Download files using wget
 def wget_file(path,f,outdir):
-    subprocess.run(["wget", "-O", os.path.join(outdir, f), os.path.join(path, f)])
+    wget.download(os.path.join(path, f), os.path.join(outdir, f))
 
 
 # Check MD5 sum of givenfile
@@ -59,6 +60,8 @@ def down_and_check(ftp,fn,out_dir):
     logger.info("\n# [BASTA STATUS] Checking MD5 sum of file\n")
     while(check_md5(md5,out_dir)):
             logger.error("\n# [BASTA ERROR] MD5 sum mismatch.\n")
+            if os.path.isfile(os.path.join(out_dir, fn)):
+                os.remove(os.path.join(out_dir, fn))
             down(ftp,fn,out_dir)
             down(ftp,md5,out_dir)
 
