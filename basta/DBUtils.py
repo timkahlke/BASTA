@@ -52,7 +52,7 @@ def create_db(path,f,of,i1,i2):
 
     timetotal = 0
     try:
-        with (gzip.open(ip,"r") if ip.endswith(".gz") else open(ip,"r")) as f:
+        with (gzip.open(ip,"rt") if ip.endswith(".gz") else open(ip,"r")) as f:
             start_time = timeit.default_timer()
             for count,line in enumerate(f):
                 if not count % 1000000:
@@ -64,7 +64,6 @@ def create_db(path,f,of,i1,i2):
                     logger.info("\n# [BASTA STATUS] %d lines processed (avg time: %fsec)" % (count,timetotal/num))
                     start_time = timeit.default_timer()
                 ls = line.strip("\n").split("\t")
-                print(ls)
                 lookup.put(bytes(ls[i1], 'utf-8'),bytes(ls[i2], 'utf-8'))
             lookup.close()
     except IOError:
