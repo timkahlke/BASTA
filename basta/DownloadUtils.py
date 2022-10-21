@@ -42,7 +42,7 @@ def wget_file(path,f,outdir):
 def check_md5(f,path):
     with open(os.path.join(path,f)) as f:
         fl = f.readline()
-        l = list(filter(None,fl.split()))
+        l = fl.split()
         filehash = hashlib.md5()
         filehash.update(open(os.path.join(path,l[1]), 'rb').read())
         if str(filehash.hexdigest()) != str(l[0]):
