@@ -52,7 +52,7 @@ def create_db(path,f,of,i1,i2):
 
     timetotal = 0
     try:
-        with (gzip.open(ip,"rt") if ip.endswith(".gz") else open(ip,"r")) as f:
+        with (gzip.open(ip,"rt") if ip.endswith(".gz") else open(ip,"rt")) as f:
             start_time = timeit.default_timer()
             for count,line in enumerate(f):
                 if not count % 1000000:
