@@ -12,7 +12,7 @@ class TestDown(unittest.TestCase):
     
     
     def test_wget(self):
-        du.wget_file("www.google.com","index.html",self.pwd)
+        du.wget_file("http://www.google.com","index.html",self.pwd)
         self.assertTrue(os.path.isfile(os.path.join(self.pwd,"index.html")))
         os.remove(os.path.join(self.pwd,"index.html"))
 
